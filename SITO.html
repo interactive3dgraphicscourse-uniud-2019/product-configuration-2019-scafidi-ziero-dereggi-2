@@ -36,7 +36,7 @@
                         <p class="title" align="center">ACQUISTA QUESTO DANNATO COLTELLO</p>
                     </div>
                     <div class="col-1">
-                        <img id="uniud" src="images/Uniud.png" width="100%" alt="Logo UNIUD">
+                        <img id="uniud" src="images/acme_logo.png" width="100%" alt="Logo UNIUD">
                     </div>
                 </div>
       </div>
@@ -229,9 +229,7 @@
             var lightMesh = new THREE.Mesh( new THREE.SphereGeometry( 1, 16, 16),
             new THREE.MeshBasicMaterial ({color: 0xffff00, wireframe:true}));
             lightMesh.position.set( 7.0, 7.0, 7.0 );
-            uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x,
-                                                                                                                        lightMesh.position.y,
-                                                                                                                        lightMesh.position.z);
+            uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
 
             var gui;
             var stats = new Stats();
@@ -344,6 +342,10 @@
         <div class="buy-section">
             <p>JUST $62</p>
             <a href="#"><img src="images/buyNow.png" alt="Compra adesso" height="200" width="300"></a>
+        </div>
+        <div>
+            <p class="fondo">ACME Industries SDZ, Via delle Scienze 206, Udine. tel +39 0432 555555 fax +39 0432 5550123 mail: acmeind@uniud.it</p>
+            <p>&nbsp;</p>
         </div>
     </div>
 
