@@ -305,7 +305,7 @@
             function init() {
                 renderer.setClearColor( 0x454545 );
 
-                camera.position.set( 0, 0, 5 );
+                camera.position.set( 0, 0, 6 );
                 scene.add( camera );
                 scene.add(lightMesh);
 
@@ -316,8 +316,8 @@
                 caricaNuovoModello();
 
                 //controls.addEventListener( 'change', render );
-                controls.minDistance = 1;
-                controls.maxDistance = 100;
+                controls.minDistance = 3;
+                controls.maxDistance = 15;
                 controls.enablePan = false;
                 controls.update();
 

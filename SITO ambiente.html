@@ -284,6 +284,7 @@
 
 
             var uniforms = uniformsOro;
+            var environment = textureCube1;
 
             vs = document.getElementById("vertex").textContent;
             fs = document.getElementById("fragment").textContent;
@@ -318,7 +319,7 @@
             function init() {
                 renderer.setClearColor( 0x454545 );
 
-                camera.position.set( 0, 0, 5 );
+                camera.position.set( 0, 0, 6 );
                 scene.add( camera );
                 scene.add(lightMesh);
 
@@ -329,8 +330,8 @@
                 caricaNuovoModello();
 
                 //controls.addEventListener( 'change', render );
-                controls.minDistance = 1;
-                controls.maxDistance = 100;
+                controls.minDistance = 3;
+                controls.maxDistance = 15;
                 controls.enablePan = false;
                 controls.update();
 
@@ -373,6 +374,7 @@
             function changeMaterial(materiale){
             	switch(materiale){
             		case 'oro':
+                        uniformsOro.envMap.value = environment;
             			uniforms = uniformsOro;
             			ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
             			rimuoviModello();
@@ -380,6 +382,7 @@
             			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;
             		case 'argento':
+                        uniformsArgento.envMap.value = environment;
             			uniforms = uniformsArgento;
             			ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
             			rimuoviModello();
@@ -387,14 +390,16 @@
             			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;
             		case 'carbone':
-            			uniforms = uniformsCarbone;
+            			uniformsCarbone.envMap.value = environment;
+                        uniforms = uniformsCarbone;
             			ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
             			rimuoviModello();
             			caricaNuovoModello();
             			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;
             		case 'hardPlastic':
-            			uniforms = uniformsplasticadura;
+            			uniformsplasticadura.envMap.value = environment;
+                        uniforms = uniformsplasticadura;
             			ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
             			rimuoviModello();
             			caricaNuovoModello();
@@ -409,18 +414,25 @@
             function changeAmbiente(ambiente){
                 switch(ambiente){
                     case 'jungle':
+                        environment = textureCube;
                         scene.background = textureCube;
                         uniforms.envMap.value = textureCube;
                         rimuoviModello();
                         caricaNuovoModello();
                         break;
                     case 'beach':
+                        environment = textureCube1;
                         scene.background = textureCube1;
                         uniforms.envMap.value = textureCube1;
+                        rimuoviModello();
+                        caricaNuovoModello();
                         break;
                     case 'park':
+                        environment = textureCube2;
                         scene.background = textureCube2;
                         uniforms.envMap.value = textureCube2;
+                        rimuoviModello();
+                        caricaNuovoModello();
                         break;
                     
                 }   
