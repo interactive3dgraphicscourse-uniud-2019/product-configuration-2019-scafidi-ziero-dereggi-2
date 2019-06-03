@@ -86,6 +86,9 @@
                         <tr> 
                             <td><a href="#" onClick="changeAmbiente('hotel')"><img id="material" src="images/hotel.jpg" alt="hotel"></a></td>
                         </tr>
+                        <tr> 
+                            <td><a href="#" onClick="changeAmbiente('noBack')"><img id="material" src="images/noBack.jpg" alt="noBack"></a></td>
+                        </tr>
                     </table>
             </div>
         </div>
@@ -225,7 +228,15 @@
                 'pz.jpg', 'nz.jpg'
             ] );
 
-            scene.background = textureCube1;
+            var loader = new THREE.CubeTextureLoader();
+            loader.setPath( 'cubemap/noBack/' );
+            var textureCube4 = loader.load( [
+                'px.jpg', 'nx.jpg',
+                'py.jpg', 'ny.jpg',
+                'pz.jpg', 'nz.jpg'
+            ] );
+
+            scene.background = textureCube4;
            
 
             var uniformsOro = {
@@ -452,7 +463,13 @@
                         rimuoviModello();
                         caricaNuovoModello();
                         break;
-                    
+                    case 'noBack':
+                        environment = textureCube4;
+                        scene.background = textureCube4;
+                        uniforms.envMap.value = textureCube4;
+                        rimuoviModello();
+                        caricaNuovoModello();
+                        break;
                 }   
             }
 
