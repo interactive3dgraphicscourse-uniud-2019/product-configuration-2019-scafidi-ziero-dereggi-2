@@ -75,19 +75,20 @@
                 <p class="menuchoice">Modifica il BACKGROUND</p>
                     <table>
                         <tr> 
-                            <td><a href="#" onClick="changeCubeMap('jungle')"><img id="material" src="images/jungle.jpg" alt="jungle"></a></td>
+                            <td><a href="#" onClick="changeAmbiente('jungle')"><img id="material" src="images/jungle.jpg" alt="jungle"></a></td>
                         </tr>
                         <tr> 
-                            <td><a href="#" onClick="changeCubeMap('park')"><img id="material" src="images/park.jpg" alt="park"></a></td>
+                            <td><a href="#" onClick="changeAmbiente('park')"><img id="material" src="images/park.jpg" alt="park"></a></td>
                         </tr>
                         <tr> 
-                            <td><a href="#" onClick="changeCubeMap('beach')"><img id="material" src="images/beach.jpg" alt="beach"></a></td>
+                            <td><a href="#" onClick="changeAmbiente('beach')"><img id="material" src="images/beach.jpg" alt="beach"></a></td>
+                        </tr>
+                        <tr> 
+                            <td><a href="#" onClick="changeAmbiente('hotel')"><img id="material" src="images/hotel.jpg" alt="hotel"></a></td>
                         </tr>
                     </table>
-                    <h1>AA</h1>
             </div>
         </div>
-
 
 
 
@@ -206,6 +207,55 @@
 
             var normalMap = loadTexture( "modello/source/Normal.jpg" );
 
+//------------------------------------------ background
+
+
+
+
+
+
+var loader = new THREE.CubeTextureLoader();
+            loader.setPath( 'cubemap/jungle2/' );
+            var textureCube = loader.load( [
+                'px.jpg', 'nx.jpg',
+                'py.jpg', 'ny.jpg',
+                'pz.jpg', 'nz.jpg'
+            ] );
+
+
+            var loader = new THREE.CubeTextureLoader();
+            loader.setPath( 'cubemap/Tenerife/' );
+            var textureCube1 = loader.load( [
+                'px.jpg', 'nx.jpg',
+                'py.jpg', 'ny.jpg',
+                'pz.jpg', 'nz.jpg'
+            ] );
+
+            var loader = new THREE.CubeTextureLoader();
+            loader.setPath( 'cubemap/Yokohama/' );
+            var textureCube2 = loader.load( [
+                'px.jpg', 'nx.jpg',
+                'py.jpg', 'ny.jpg',
+                'pz.jpg', 'nz.jpg'
+            ] );
+
+            var loader = new THREE.CubeTextureLoader();
+            loader.setPath( 'cubemap/hotel/' );
+            var textureCube3 = loader.load( [
+                'px.jpg', 'nx.jpg',
+                'py.jpg', 'ny.jpg',
+                'pz.jpg', 'nz.jpg'
+            ] );
+
+            scene.background = textureCube1;
+
+
+
+
+
+
+
+//------------------------------------------end background
 
             var uniformsOro = {
                     cspec:  { type: "v3", value: new THREE.Vector3(1.022,0.782,0.344) },
@@ -215,6 +265,7 @@
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
+                    //  envMap: { type: "t", value: textureCube1},
                     };
 
 
@@ -226,6 +277,7 @@
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
+                    //   envMap: { type: "t", value: textureCube1},
                     };
 
 
@@ -237,6 +289,7 @@
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
+                    // envMap: { type: "t", value: textureCube1},
                     };
 
              var uniformsplasticadura = {
@@ -247,6 +300,7 @@
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
+                    //  clight: { type: "v3", value: new THREE.Vector3() },
                     };
 
              var uniformsLegno = {
@@ -257,6 +311,7 @@
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
+                    //  clight: { type: "v3", value: new THREE.Vector3() },
                     };
 
              var uniformsGomma = {
@@ -267,6 +322,7 @@
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
+                    //  clight: { type: "v3", value: new THREE.Vector3() },
                     };
 
 

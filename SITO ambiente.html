@@ -83,8 +83,10 @@
                         <tr> 
                             <td><a href="#" onClick="changeAmbiente('beach')"><img id="material" src="images/beach.jpg" alt="beach"></a></td>
                         </tr>
+                        <tr> 
+                            <td><a href="#" onClick="changeAmbiente('hotel')"><img id="material" src="images/hotel.jpg" alt="hotel"></a></td>
+                        </tr>
                     </table>
-                    <h1>AA</h1>
             </div>
         </div>
 
@@ -198,6 +200,7 @@
                 'pz.jpg', 'nz.jpg'
             ] );
 
+
             var loader = new THREE.CubeTextureLoader();
             loader.setPath( 'cubemap/Tenerife/' );
             var textureCube1 = loader.load( [
@@ -209,6 +212,14 @@
             var loader = new THREE.CubeTextureLoader();
             loader.setPath( 'cubemap/Yokohama/' );
             var textureCube2 = loader.load( [
+                'px.jpg', 'nx.jpg',
+                'py.jpg', 'ny.jpg',
+                'pz.jpg', 'nz.jpg'
+            ] );
+
+            var loader = new THREE.CubeTextureLoader();
+            loader.setPath( 'cubemap/hotel/' );
+            var textureCube3 = loader.load( [
                 'px.jpg', 'nx.jpg',
                 'py.jpg', 'ny.jpg',
                 'pz.jpg', 'nz.jpg'
@@ -431,6 +442,13 @@
                         environment = textureCube2;
                         scene.background = textureCube2;
                         uniforms.envMap.value = textureCube2;
+                        rimuoviModello();
+                        caricaNuovoModello();
+                        break;
+                    case 'hotel':
+                        environment = textureCube3;
+                        scene.background = textureCube3;
+                        uniforms.envMap.value = textureCube3;
                         rimuoviModello();
                         caricaNuovoModello();
                         break;
