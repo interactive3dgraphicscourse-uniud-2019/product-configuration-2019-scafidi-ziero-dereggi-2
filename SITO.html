@@ -86,6 +86,9 @@
                         <tr> 
                             <td><a href="#" onClick="changeAmbiente('hotel')"><img id="material" src="images/hotel.jpg" alt="hotel"></a></td>
                         </tr>
+                        <tr> 
+                            <td><a href="#" onClick="changeAmbiente('noBack')"><img id="material" src="images/noBack.jpg" alt="noBack"></a></td>
+                        </tr>
                     </table>
             </div>
         </div>
@@ -208,12 +211,6 @@
             var normalMap = loadTexture( "modello/source/Normal.jpg" );
 
 //------------------------------------------ background
-
-
-
-
-
-
 var loader = new THREE.CubeTextureLoader();
             loader.setPath( 'cubemap/jungle2/' );
             var textureCube = loader.load( [
@@ -247,13 +244,7 @@ var loader = new THREE.CubeTextureLoader();
                 'pz.jpg', 'nz.jpg'
             ] );
 
-            scene.background = textureCube1;
-
-
-
-
-
-
+          //  scene.background = textureCube1;
 
 //------------------------------------------end background
 
@@ -265,7 +256,7 @@ var loader = new THREE.CubeTextureLoader();
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
-                    //  envMap: { type: "t", value: textureCube1},
+                      envMap: { type: "t", value: textureCube1},
                     };
 
 
@@ -277,7 +268,7 @@ var loader = new THREE.CubeTextureLoader();
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
-                    //   envMap: { type: "t", value: textureCube1},
+                       envMap: { type: "t", value: textureCube1},
                     };
 
 
@@ -289,7 +280,7 @@ var loader = new THREE.CubeTextureLoader();
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
-                    // envMap: { type: "t", value: textureCube1},
+                     envMap: { type: "t", value: textureCube1},
                     };
 
              var uniformsplasticadura = {
@@ -300,7 +291,7 @@ var loader = new THREE.CubeTextureLoader();
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
-                    //  clight: { type: "v3", value: new THREE.Vector3() },
+                      clight: { type: "v3", value: new THREE.Vector3() },
                     };
 
              var uniformsLegno = {
@@ -311,7 +302,7 @@ var loader = new THREE.CubeTextureLoader();
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
-                    //  clight: { type: "v3", value: new THREE.Vector3() },
+                      clight: { type: "v3", value: new THREE.Vector3() },
                     };
 
              var uniformsGomma = {
@@ -322,11 +313,12 @@ var loader = new THREE.CubeTextureLoader();
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
-                    //  clight: { type: "v3", value: new THREE.Vector3() },
+                      clight: { type: "v3", value: new THREE.Vector3() },
                     };
 
 
             var uniforms = uniformsArgento;
+            var environment = textureCube1;
 
             vs = document.getElementById("vertex").textContent;
             fs = document.getElementById("fragment").textContent;
@@ -416,13 +408,15 @@ var loader = new THREE.CubeTextureLoader();
             function changeMaterial(materiale){
             	switch(materiale){
             		case 'oro':
-            			uniforms = uniformsOro;
+            			uniformsOro.envMap.value = environment;
+                        uniforms = uniformsOro;
             			ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
             			rimuoviModello();
             			caricaNuovoModello();
             			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;
             		case 'argento':
+                      uniformsArgento.envMap.value = environment;
             			uniforms = uniformsArgento;
             			ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
             			rimuoviModello();
@@ -430,6 +424,7 @@ var loader = new THREE.CubeTextureLoader();
             			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;
             		case 'carbone':
+                    	uniformsCarbone.envMap.value = environment;
             			uniforms = uniformsCarbone;
             			ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
             			rimuoviModello();
@@ -437,6 +432,7 @@ var loader = new THREE.CubeTextureLoader();
             			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;
             		case 'hardPlastic':
+                    uniformsplasticadura.envMap.value = environment;
             			uniforms = uniformsplasticadura;
             			ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
             			rimuoviModello();
@@ -447,6 +443,59 @@ var loader = new THREE.CubeTextureLoader();
             			break;
             	}
             }
+
+
+
+
+
+
+            function changeAmbiente(ambiente){
+                switch(ambiente){
+                    case 'jungle':
+                        environment = textureCube;
+                        scene.background = textureCube;
+                        uniforms.envMap.value = textureCube;
+                        rimuoviModello();
+                        caricaNuovoModello();
+                        break;
+                    case 'beach':
+                        environment = textureCube1;
+                        scene.background = textureCube1;
+                        uniforms.envMap.value = textureCube1;
+                        rimuoviModello();
+                        caricaNuovoModello();
+                        break;
+                    case 'park':
+                        environment = textureCube2;
+                        scene.background = textureCube2;
+                        uniforms.envMap.value = textureCube2;
+                        rimuoviModello();
+                        caricaNuovoModello();
+                        break;
+                    case 'hotel':
+                        environment = textureCube3;
+                        scene.background = textureCube3;
+                        uniforms.envMap.value = textureCube3;
+                        rimuoviModello();
+                        caricaNuovoModello();
+                        break;
+                    case 'noBack':
+            //  environment =        
+              scene.background.remove();
+            //  uniforms.envMap.value= 
+                        rimuoviModello();
+                        caricaNuovoModello();
+                        break;
+                    
+                }   
+            }
+
+
+
+
+
+
+
 
 
             function caricaNuovoModello(){
