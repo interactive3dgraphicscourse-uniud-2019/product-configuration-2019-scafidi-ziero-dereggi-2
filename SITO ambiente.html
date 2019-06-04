@@ -593,7 +593,8 @@
             function caricaNuovoModello(materiale1){
 				var loader = new THREE.OBJLoader2();
             	loader.useIndices = true;
-                loader.load( "modello/source/BGKnife.obj", function ( obj ) {
+               // loader.load( "modello/source/BGKnife.obj", function ( obj ) {
+                loader.load( "modello/source/BGKnife2.obj", function ( obj ) {
                     console.log(obj);
                     obj.detail.loaderRootNode.traverse( function(child) {
                         if (child.isMesh){
