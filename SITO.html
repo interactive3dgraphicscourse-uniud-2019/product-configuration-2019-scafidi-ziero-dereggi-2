@@ -45,16 +45,9 @@
                 <a href="#" onClick="changeMaterial('oro')"><img id="material" src="images/oro.jpg" alt="oro"></a>
                 <a href="#" onClick="changeMaterial('carbone')"><img id="material" src="images/carbon.jpg" alt="carbone"></a>
                 <p class="menuchoice">Modifica MATERIALE dell'impugnatura</p>
-                <tr> 
-                    <td><a href="#" onClick="changeMaterial('hardPlastic')"><img id="material" src="images/hardPlastic.jpg" alt="hardPlastic"></a></td>
-                </tr>
-                <tr> 
-                    <td><a href="#" onClick="changeMaterial('legno')"><img id="material" src="images/legno.jpg" alt="legno"></a></td>
-                </tr>
-                <tr> 
-                    <td><a href="#" onClick="changeMaterial('gomma')"><img id="material" src="images/gomma.jpg" alt="gomma"></a></td>
-                </tr>
-                
+                <a href="#" onClick="changeMaterial('hardPlastic')"><img id="material" src="images/hardPlastic.jpg" alt="hardPlastic"></a></td>
+                <a href="#" onClick="changeMaterial('argento2')"><img id="material" src="images/legno.jpg" alt="legno"></a></td>
+                <a href="#" onClick="changeMaterial('oro2')"><img id="material" src="images/gomma.jpg" alt="gomma"></a></td>                
             </div>
 
 
@@ -316,10 +309,15 @@ var loader = new THREE.CubeTextureLoader();
             vs = document.getElementById("vertex").textContent;
             fs = document.getElementById("fragment").textContent;
 
-            var ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
-            ourMaterial.vertexTangents = true;
-            ourMaterial.needsUpdate = true;
-            console.log(ourMaterial);
+            var lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            lamaMaterial.vertexTangents = true;
+            lamaMaterial.needsUpdate = true;
+            console.log(lamaMaterial);
+
+            var bastoneMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            bastoneMaterial.vertexTangents = true;
+            bastoneMaterial.needsUpdate = true;
+            console.log(bastoneMaterial);
 
             
 
@@ -403,15 +401,15 @@ var loader = new THREE.CubeTextureLoader();
             		case 'oro':
             			uniformsOro.envMap.value = environment;
                         uniforms = uniformsOro;
-            			ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
             			rimuoviModello();
             			caricaNuovoModello();
             			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;
             		case 'argento':
-                      uniformsArgento.envMap.value = environment;
+                      	uniformsArgento.envMap.value = environment;
             			uniforms = uniformsArgento;
-            			ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
             			rimuoviModello();
             			caricaNuovoModello();
             			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
@@ -419,19 +417,43 @@ var loader = new THREE.CubeTextureLoader();
             		case 'carbone':
                     	uniformsCarbone.envMap.value = environment;
             			uniforms = uniformsCarbone;
-            			ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
             			rimuoviModello();
             			caricaNuovoModello();
             			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;
             		case 'hardPlastic':
-                    uniformsplasticadura.envMap.value = environment;
+                    	uniformsplasticadura.envMap.value = environment;
             			uniforms = uniformsplasticadura;
-            			ourMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
             			rimuoviModello();
             			caricaNuovoModello();
             			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;	
+            		case 'legno':
+                    	uniformsLegno.envMap.value = environment;
+            			uniforms = uniformsLegno;
+            			bastoneMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            			rimuoviModello();
+            			caricaNuovoModello();
+            			uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			break;	
+            		case 'argento2':
+                      	uniformsArgento.envMap.value = environment;
+            			uniforms = uniformsArgento;
+            			bastoneMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            			rimuoviModello();
+            			caricaNuovoModello();
+            			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			break;
+            		case 'oro2':
+            			uniformsOro.envMap.value = environment;
+                        uniforms = uniformsOro;
+            			bastoneMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            			rimuoviModello();
+            			caricaNuovoModello();
+            			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			break;
             		default:
             			break;
             	}
@@ -494,19 +516,20 @@ var loader = new THREE.CubeTextureLoader();
             function caricaNuovoModello(){
 				var loader = new THREE.OBJLoader2();
             	loader.useIndices = true;
+
                 loader.load( "modello/source/ascia.obj", function ( obj ) {
                     console.log(obj);
-                    //geometry = gltf.scene.children[ 0 ].children[0].geometry;
+
                     geometry = obj.detail.loaderRootNode.children[0].geometry;
-                    //geometry.center();
-                    mesh = new THREE.Mesh( geometry, ourMaterial );
+                    geometry.applyMatrix( new THREE.Matrix4().makeTranslation(85, 0, 0) );
+                    mesh = new THREE.Mesh( geometry, lamaMaterial );
                     mesh.scale.multiplyScalar( 0.1 );
                     THREE.BufferGeometryUtils.computeTangents(geometry);
                     scene.add( mesh );
 
                     geometry = obj.detail.loaderRootNode.children[1].geometry;
-                    //geometry.center();
-                    mesh = new THREE.Mesh( geometry, ourMaterial );
+                    geometry.applyMatrix( new THREE.Matrix4().makeTranslation(85, 0, 0) );
+                    mesh = new THREE.Mesh( geometry, bastoneMaterial );
                     mesh.scale.multiplyScalar( 0.1 );
                     THREE.BufferGeometryUtils.computeTangents(geometry);
                     scene.add( mesh );
@@ -515,7 +538,7 @@ var loader = new THREE.CubeTextureLoader();
 			
 			function rimuoviModello(){
 				if(scene.children.length > 2){ // la luce puntuale, la base dell'oggetto e l'oggetto
-					scene.remove(scene.getObjectByName("OSG_Scene"));
+					scene.remove(scene.getObjectByName("OSG_Scene"));     //             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% da rivedere
 				}
 			}
 
