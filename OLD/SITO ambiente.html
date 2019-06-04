@@ -590,10 +590,11 @@
             }
 
 
-            function caricaNuovoModello(materiale1){
+            function caricaNuovoModello(materiale){
 				var loader = new THREE.OBJLoader2();
             	loader.useIndices = true;
-                loader.load( "modello/source/BGKnife.obj", function ( obj ) {
+               // loader.load( "modello/source/BGKnife.obj", function ( obj ) {
+                loader.load( "modello/source/BGKnife2.obj", function ( obj ) {
                     console.log(obj);
                     obj.detail.loaderRootNode.traverse( function(child) {
                         if (child.isMesh){
@@ -604,7 +605,7 @@
                     //geometry = gltf.scene.children[ 0 ].children[0].geometry;
                     geometry = obj.detail.loaderRootNode.children[0].geometry;
                     geometry.center();
-                    mesh = new THREE.Mesh( geometry, materiale1 );
+                    mesh = new THREE.Mesh( geometry, materiale );
                     mesh.scale.multiplyScalar( 0.1 );
                     THREE.BufferGeometryUtils.computeTangents(geometry);
                     scene.add( mesh );
@@ -612,9 +613,9 @@
 			}
 			
 			function rimuoviModello(){
-				if(scene.children.length > 1){ // la luce e l'oggetto
-					scene.remove(scene.getObjectByName("OSG_Scene"));
-				}
+                while(scene.children.length > 0){ 
+                    scene.remove(scene.children[0]); 
+                }
 			}
 
             init();

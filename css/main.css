@@ -4,21 +4,22 @@
 }
 
 body {
-    background-image: url(../images/sfondo.jpg);
+    background-image: url(../images/sfondo2.png);
     height: 100%;
-    color: #FF8700;
+    color: #ffff00;
     font-family: 'KeepCalm-Medium', sans-serif;
 }
 
 .header {
     text-align: center;
-    font-size: 45px;
+    font-size: 30px;
 }
 
 .title {
+    text-align: center;
     font-family: 'KeepCalm-Medium', cursive;
-    font-size: 30px;
-	color: #ffffff
+    font-size: 45px;
+	color: #ffffff;
 }
 
 
