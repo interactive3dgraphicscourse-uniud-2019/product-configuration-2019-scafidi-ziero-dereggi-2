@@ -69,6 +69,14 @@ table {
     border: 2px #3f3f3f solid;
 }
 
+.icona {
+    margin: 2px 2px;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    border: 2px #3f3f3f solid;
+}
+
 
 
 #materiale img:hover {
