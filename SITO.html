@@ -424,7 +424,7 @@
             var lightColor_OFF_mat = new THREE.MeshBasicMaterial ({color: 0x545454, wireframe:true});
             var lightMesh = new THREE.Mesh( new THREE.SphereGeometry( 1, 16, 16), lightColor_ON_mat );
             lightMesh.position.set( 7.0, 7.0, 7.0 );
-            lightMesh.visible = true;
+            lightMesh.visible = false;
             uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
 
