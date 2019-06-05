@@ -45,9 +45,9 @@
                 <a href="#" onClick="changeMaterial('oro')"><img id="material" src="images/oro.jpg" alt="oro"></a>
                 <a href="#" onClick="changeMaterial('carbone')"><img id="material" src="images/carbon.jpg" alt="carbone"></a>
                 <p class="menuchoice">Modifica MATERIALE dell'impugnatura</p>
-                <a href="#" onClick="changeMaterial('hardPlastic')"><img id="material" src="images/hardPlastic.jpg" alt="hardPlastic"></a></td>
-                <a href="#" onClick="changeMaterial('argento2')"><img id="material" src="images/legno.jpg" alt="legno"></a></td>
-                <a href="#" onClick="changeMaterial('oro2')"><img id="material" src="images/gomma.jpg" alt="gomma"></a></td>                
+                <a href="#" onClick="changeMaterial('carbone1')"><img id="material" src="images/hardPlastic.jpg" alt="hardPlastic"></a></td>
+                <a href="#" onClick="changeMaterial('argento1')"><img id="material" src="images/legno.jpg" alt="legno"></a></td>
+                <a href="#" onClick="changeMaterial('oro1')"><img id="material" src="images/gomma.jpg" alt="gomma"></a></td>                
             </div>
 
 
@@ -80,13 +80,7 @@
 
 
 
-
-
-
-
-
-
-        <script type="text/x-glsl" id="vertex">
+		<script type="text/x-glsl" id="vertex_background">
         attribute vec4 tangent;
         varying vec3 vNormal;
         varying vec3 vPosition;
@@ -107,7 +101,7 @@
         }
         </script>
 
-        <script type="text/x-glsl" id="fragment">
+        <script type="text/x-glsl" id="fragment_background">
             varying vec3 vNormal;
             varying vec3 vTangent;
             varying vec3 vBitangent;
@@ -170,6 +164,82 @@
         </script>
 
 
+
+        <script type="text/x-glsl" id="vertex">
+        attribute vec4 tangent;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        varying vec3 wPosition;
+        varying vec3 vTangent;
+        varying vec3 vBitangent;
+        varying vec2 vUv;
+
+        void main() {
+            vec4 vPos = modelViewMatrix * vec4( position, 1.0 );
+            vPosition = vPos.xyz;
+            wPosition = (modelMatrix * vec4( position, 1.0 )).xyz;
+            vNormal = normalize(normalMatrix * normal);
+            vec3 objectTangent = vec3( tangent.xyz );
+            vec3 transformedTangent = normalMatrix * objectTangent;
+            vTangent = normalize( transformedTangent );
+            vBitangent = normalize( cross( vNormal, vTangent ) * tangent.w );
+            vUv = uv;
+            gl_Position = projectionMatrix * vPos;
+        }
+        </script>
+
+        <script type="text/x-glsl" id="fragment">
+            varying vec3 vNormal;
+            varying vec3 vTangent;
+            varying vec3 vBitangent;
+            varying vec3 vPosition;
+            varying vec3 wPosition;
+            varying vec2 vUv;
+            uniform vec3 cspec;
+            uniform sampler2D normalMap;
+            uniform samplerCube envMap;
+            uniform vec2 normalScale;
+            const float PI = 3.14159;
+
+            vec3 FSchlick(float lDoth) {
+                return (cspec + (vec3(1.0)-cspec)*pow(1.0 - lDoth,5.0));
+            }
+
+        
+
+        // http://en.wikibooks.org/wiki/GLSL_Programming/Applying_Matrix_Transformations
+        vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
+            return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );
+        }
+
+            void main() {
+                vec3 normal = normalize( vNormal );
+                vec3 tangent = normalize( vTangent );
+                vec3 bitangent = normalize( vBitangent );
+                mat3 vTBN = mat3( tangent, bitangent, normal );
+                vec3 mapN = texture2D( normalMap, vUv ).xyz * 2.0 - 1.0;
+                //mapN.xy = normalScale * mapN.xy;
+                vec3 n = normalize( vTBN * mapN );
+                vec3 v = normalize( -vPosition);
+                vec3 worldN = inverseTransformDirection( n, viewMatrix );
+                vec3 worldV = cameraPosition - wPosition ;
+                vec3 r = normalize( reflect(-worldV,worldN));
+                // small quantity to prevent divisions by 0
+                float nDotv = max(dot( n, v ),0.000001);
+                vec3 fresnel = FSchlick(nDotv);
+                // negate x to account for how cubemap is displayed on background
+                vec3 envLight = textureCube( envMap, vec3(-r.x, r.yz)).rgb;
+                // texture in sRGB, linearize
+                envLight = pow( envLight, vec3(2.2));
+                vec3 outRadiance = fresnel*envLight;
+                // gamma encode the final value
+                gl_FragColor = vec4(pow( outRadiance, vec3(1.0/2.2)), 1.0);
+            }
+        </script>
+
+        
+
+
         <script>
             container = document.getElementById('canvas');
             larghezza = document.getElementById('canvas').clientWidth -10;
@@ -193,11 +263,11 @@
                 normalScale: 0.0,
             }
 
-            var normalMap0 = loadTexture( "modello/textures/Cylinder001 [Normal].png" );
-            var normalMap = loadTexture( "modello/textures/Box002 [Normal].png" );
+            var normalMapI = loadTexture( "modello/textures/Cylinder001 [Normal].png" );
+            var normalMapL = loadTexture( "modello/textures/Box002 [Normal].png" );
 
 //------------------------------------------ background
-var loader = new THREE.CubeTextureLoader();
+			var loader = new THREE.CubeTextureLoader();
             loader.setPath( 'cubemap/jungle2/' );
             var textureCube = loader.load( [
                 'px.jpg', 'nx.jpg',
@@ -230,7 +300,7 @@ var loader = new THREE.CubeTextureLoader();
                 'pz.jpg', 'nz.jpg'
             ] );
 
-          //  scene.background = textureCube1;
+            scene.background = textureCube1;
 
 //------------------------------------------end background
 
@@ -238,11 +308,11 @@ var loader = new THREE.CubeTextureLoader();
                     cspec:  { type: "v3", value: new THREE.Vector3(1.022,0.782,0.344) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
-                    normalMap:  { type: "t", value: normalMap},
+                    normalMap:  { type: "t", value: normalMapL},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
-                      envMap: { type: "t", value: textureCube1},
+                    envMap: { type: "t", value: textureCube1},
                     };
 
 
@@ -250,11 +320,11 @@ var loader = new THREE.CubeTextureLoader();
                     cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
                     roughness: {type: "f", value: 0.5},
-                    normalMap:  { type: "t", value: normalMap},
+                    normalMap:  { type: "t", value: normalMapL},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
-                       envMap: { type: "t", value: textureCube1},
+                    envMap: { type: "t", value: textureCube1},
                     };
 
 
@@ -262,69 +332,88 @@ var loader = new THREE.CubeTextureLoader();
                     cspec:  { type: "v3", value: new THREE.Vector3(0.972,0.960,0.915) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
-                    normalMap:  { type: "t", value: normalMap},
+                    normalMap:  { type: "t", value: normalMapL},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
                      envMap: { type: "t", value: textureCube1},
                     };
 
-             var uniformsplasticadura = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
-                    cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
-                    roughness: {type: "f", value: 0.8},
-                    normalMap:  { type: "t", value: normalMap},
-                    normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
-                    pointLightPosition: { type: "v3", value: new THREE.Vector3() },
-                    clight: { type: "v3", value: new THREE.Vector3() },
-                      clight: { type: "v3", value: new THREE.Vector3() },
-                    };
-
-             var uniformsLegno = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
+             var uniformsOro1 = {
+                    cspec:  { type: "v3", value: new THREE.Vector3(1.022,0.782,0.344) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
-                    normalMap:  { type: "t", value: normalMap},
+                    normalMap:  { type: "t", value: normalMapI},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
-                      clight: { type: "v3", value: new THREE.Vector3() },
+                    envMap: { type: "t", value: textureCube1},
                     };
 
-             var uniformsGomma = {
+
+             var uniformsCarbone1 = {
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
+                    cdiff:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
+                    roughness: {type: "f", value: 0.5},
+                    normalMap:  { type: "t", value: normalMapI},
+                    normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
+                    pointLightPosition: { type: "v3", value: new THREE.Vector3() },
+                    clight: { type: "v3", value: new THREE.Vector3() },
+                    envMap: { type: "t", value: textureCube1},
+                    };
+
+
+             var uniformsArgento1 = {
                     cspec:  { type: "v3", value: new THREE.Vector3(0.972,0.960,0.915) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
-                    normalMap:  { type: "t", value: normalMap},
+                    normalMap:  { type: "t", value: normalMapI},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
-                      clight: { type: "v3", value: new THREE.Vector3() },
+                    envMap: { type: "t", value: textureCube1},
                     };
 
+             
 
-            var uniforms = uniformsArgento;
+
+            var uniformsL = uniformsArgento;
+            var uniformsI = uniformsOro1;
             var environment = textureCube1;
+            var defaultamb = false;
 
             vs = document.getElementById("vertex").textContent;
             fs = document.getElementById("fragment").textContent;
 
-            var lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            vs_back = document.getElementById("vertex_background").textContent;
+            fs_back = document.getElementById("fragment_background").textContent;
+
+            var lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
             lamaMaterial.vertexTangents = true;
             lamaMaterial.needsUpdate = true;
             console.log(lamaMaterial);
 
-            var bastoneMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
-            bastoneMaterial.vertexTangents = true;
-            bastoneMaterial.needsUpdate = true;
-            console.log(bastoneMaterial);
+            var impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
+            impugnaturaMaterial.vertexTangents = true;
+            impugnaturaMaterial.needsUpdate = true;
+            console.log(impugnaturaMaterial);
 
-            
+            var materialBackL = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs_back, fragmentShader: fs_back});
+            materialBackL.vertexTangents = true;
+            materialBackL.needsUpdate = true;
+            console.log(materialBackL);
+
+            var materialBackI = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs_back, fragmentShader: fs_back});
+            materialBackI.vertexTangents = true;
+            materialBackI.needsUpdate = true;
+            console.log(materialBackI);
+ 
 
             var lightMesh = new THREE.Mesh( new THREE.SphereGeometry( 1, 16, 16),
             new THREE.MeshBasicMaterial ({color: 0xffff00, wireframe:true}));
             lightMesh.position.set( 7.0, 7.0, 7.0 );
-            uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
 
             var stats = new Stats();
 
@@ -344,9 +433,8 @@ var loader = new THREE.CubeTextureLoader();
             function init() {
                 renderer.setClearColor( 0x1a3300 );
 
-                camera.position.set( 15, -20, 35 );
+                camera.position.set( 0, 0, 15 );
                 scene.add( camera );
-                scene.add(lightMesh);
 
                 container.appendChild( renderer.domElement );
                 renderer.setPixelRatio( window.devicePixelRatio );
@@ -355,8 +443,8 @@ var loader = new THREE.CubeTextureLoader();
                 caricaNuovoModello();
 
                 //controls.addEventListener( 'change', render );
-                controls.minDistance = 5;
-                controls.maxDistance = 45;
+                controls.minDistance = 10;
+                controls.maxDistance = 20;
                 controls.enablePan = false;
                 controls.update();
 
@@ -388,11 +476,10 @@ var loader = new THREE.CubeTextureLoader();
 
             function updateUniforms() {
 
-                            uniforms.clight.value = new THREE.Vector3(
-                            lightParameters.red * lightParameters.intensity,
-                        lightParameters.green * lightParameters.intensity,
-                            lightParameters.blue * lightParameters.intensity);
-                            uniforms.normalScale.value = new THREE.Vector2( textureParameters.normalScale, textureParameters.normalScale );
+                uniformsL.clight.value = new THREE.Vector3( lightParameters.red * lightParameters.intensity, lightParameters.green * lightParameters.intensity, lightParameters.blue * lightParameters.intensity);
+                uniformsL.normalScale.value = new THREE.Vector2( textureParameters.normalScale, textureParameters.normalScale );
+                uniformsI.clight.value = new THREE.Vector3( lightParameters.red * lightParameters.intensity, lightParameters.green * lightParameters.intensity, lightParameters.blue * lightParameters.intensity);
+                uniformsI.normalScale.value = new THREE.Vector2( textureParameters.normalScale, textureParameters.normalScale );
 
             }
 
@@ -400,59 +487,63 @@ var loader = new THREE.CubeTextureLoader();
             	switch(materiale){
             		case 'oro':
             			uniformsOro.envMap.value = environment;
-                        uniforms = uniformsOro;
-            			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+                        uniformsL = uniformsOro;
+            			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
+            			materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
             			rimuoviModello();
             			caricaNuovoModello();
-            			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;
             		case 'argento':
                       	uniformsArgento.envMap.value = environment;
-            			uniforms = uniformsArgento;
-            			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            			uniformsL = uniformsArgento;
+            			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
+            			materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
             			rimuoviModello();
             			caricaNuovoModello();
-            			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;
             		case 'carbone':
                     	uniformsCarbone.envMap.value = environment;
-            			uniforms = uniformsCarbone;
-            			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            			uniformsL = uniformsCarbone;
+            			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
+            			materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
             			rimuoviModello();
             			caricaNuovoModello();
-            			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;
-            		case 'hardPlastic':
-                    	uniformsplasticadura.envMap.value = environment;
-            			uniforms = uniformsplasticadura;
-            			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            		case 'oro1':
+                    	uniformsOro1.envMap.value = environment;
+            			uniformsI = uniformsOro1;
+            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
+            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
             			rimuoviModello();
             			caricaNuovoModello();
-            			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;	
-            		case 'legno':
-                    	uniformsLegno.envMap.value = environment;
-            			uniforms = uniformsLegno;
-            			bastoneMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            		case 'argento1':
+                    	uniformsArgento1.envMap.value = environment;
+            			uniformsI = uniformsArgento1;
+            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
+            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
             			rimuoviModello();
             			caricaNuovoModello();
-            			uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;	
-            		case 'argento2':
-                      	uniformsArgento.envMap.value = environment;
-            			uniforms = uniformsArgento;
-            			bastoneMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
+            		case 'carbone1':
+                      	uniformsCarbone1.envMap.value = environment;
+            			uniformsI = uniformsCarbone1;
+            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
+            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
             			rimuoviModello();
             			caricaNuovoModello();
-            			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-            			break;
-            		case 'oro2':
-            			uniformsOro.envMap.value = environment;
-                        uniforms = uniformsOro;
-            			bastoneMaterial = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vs, fragmentShader: fs });
-            			rimuoviModello();
-            			caricaNuovoModello();
-            			 uniforms.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			break;
             		default:
             			break;
@@ -462,53 +553,52 @@ var loader = new THREE.CubeTextureLoader();
 
 
 
-
-
             function changeAmbiente(ambiente){
                 switch(ambiente){
                     case 'jungle':
+                    	defaultamb = false;
                         environment = textureCube;
                         scene.background = textureCube;
-                        uniforms.envMap.value = textureCube;
+                        uniformsL.envMap.value = textureCube;
+                        uniformsI.envMap.value = textureCube;
                         rimuoviModello();
                         caricaNuovoModello();
                         break;
                     case 'beach':
+                    	defaultamb = false;
                         environment = textureCube1;
                         scene.background = textureCube1;
-                        uniforms.envMap.value = textureCube1;
+                        uniformsL.envMap.value = textureCube1;
+                        uniformsI.envMap.value = textureCube1;
                         rimuoviModello();
                         caricaNuovoModello();
                         break;
                     case 'park':
+                    	defaultamb = false;
                         environment = textureCube2;
                         scene.background = textureCube2;
-                        uniforms.envMap.value = textureCube2;
+                        uniformsL.envMap.value = textureCube2;
+                        uniformsI.envMap.value = textureCube2;
                         rimuoviModello();
                         caricaNuovoModello();
                         break;
                     case 'hotel':
+                    	defaultamb = false;
                         environment = textureCube3;
                         scene.background = textureCube3;
-                        uniforms.envMap.value = textureCube3;
+                        uniformsL.envMap.value = textureCube3;
+                        uniformsI.envMap.value = textureCube3;
                         rimuoviModello();
                         caricaNuovoModello();
                         break;
                     case 'noBack':
-            //  environment =        
-              scene.background.remove();
-            //  uniforms.envMap.value= 
-                        rimuoviModello();
+                    	defaultamb = true;
+            			rimuoviModello();
+                        scene.background =  0x1a3300;
                         caricaNuovoModello();
-                        break;
-                    
+                        break;      
                 }   
             }
-
-
-
-
-
 
 
 
@@ -521,25 +611,35 @@ var loader = new THREE.CubeTextureLoader();
                     console.log(obj);
 
                     geometry = obj.detail.loaderRootNode.children[0].geometry;
-                    geometry.applyMatrix( new THREE.Matrix4().makeTranslation(85, 0, 0) );
-                    mesh = new THREE.Mesh( geometry, lamaMaterial );
-                    mesh.scale.multiplyScalar( 0.1 );
+                    geometry.applyMatrix( new THREE.Matrix4().makeTranslation(115, 0, 0) );
+                    var mesh;
+                    if (defaultamb == true){
+                    	mesh = new THREE.Mesh( geometry, materialBackL );
+                    } else {
+                    	mesh = new THREE.Mesh( geometry, lamaMaterial );
+                    }
+                    mesh.scale.multiplyScalar( 0.03 );
                     THREE.BufferGeometryUtils.computeTangents(geometry);
                     scene.add( mesh );
 
                     geometry = obj.detail.loaderRootNode.children[1].geometry;
-                    geometry.applyMatrix( new THREE.Matrix4().makeTranslation(85, 0, 0) );
-                    mesh = new THREE.Mesh( geometry, bastoneMaterial );
-                    mesh.scale.multiplyScalar( 0.1 );
+                    geometry.applyMatrix( new THREE.Matrix4().makeTranslation(115, 0, 0) );
+                    if (defaultamb == true){
+                    	mesh = new THREE.Mesh( geometry, materialBackI );
+                    } else {
+                    	mesh = new THREE.Mesh( geometry, impugnaturaMaterial );
+                    }
+                    mesh.scale.multiplyScalar( 0.03 );
                     THREE.BufferGeometryUtils.computeTangents(geometry);
                     scene.add( mesh );
+                    scene.add(lightMesh);
                 } );
 			}
 			
 			function rimuoviModello(){
-				if(scene.children.length > 2){ // la luce puntuale, la base dell'oggetto e l'oggetto
-					scene.remove(scene.getObjectByName("OSG_Scene"));     //             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% da rivedere
-				}
+                while(scene.children.length > 0){ 
+                    scene.remove(scene.children[0]); 
+                }
 			}
 
             init();
