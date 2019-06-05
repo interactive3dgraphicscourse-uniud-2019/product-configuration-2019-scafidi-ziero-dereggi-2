@@ -62,7 +62,7 @@
                     <a href="#" onClick="changeAmbiente('park')"><img class="material" src="images/park.jpg" alt="park"></a>
                     <a href="#" onClick="changeAmbiente('tempio')"><img class="material" src="images/tempio.jpg" alt="tempio"></a>
                     <a href="#" onClick="changeAmbiente('distesa')"><img class="material" src="images/distesa.jpg" alt="distesa"></a>
-                    <a href="#" onClick="changeAmbiente('sunset')"><img class="material" src="images/sunset.jpg" alt="sunset"></a>
+                    <a href="#" onClick="changeAmbiente('neve')"><img class="material" src="images/neve.jpg" alt="neve"></a>
                     <a href="#" onClick="changeAmbiente('noBack')"><img class="material" src="images/noBack.jpg" alt="noBack"></a>
                 <p>&nbsp;</p>
                 <p class="menuchoice">Controlli di SCENA</p>
@@ -304,11 +304,11 @@
             ] );
 
             var loader = new THREE.CubeTextureLoader();
-            loader.setPath( 'cubemap/sunset/' );
+            loader.setPath( 'cubemap/neve/' );
             var textureCube4 = loader.load( [
-                'px.png', 'nx.png',
-                'py.png', 'ny.png',
-                'pz.png', 'nz.png'
+                'px.jpg', 'nx.jpg',
+                'py.jpg', 'ny.jpg',
+                'pz.jpg', 'nz.jpg'
             ] );
 
             scene.background = textureCube1;
@@ -637,7 +637,7 @@
                         rimuoviModello();
                         caricaNuovoModello();
                         break;
-                    case 'sunset':
+                    case 'neve':
                         defaultamb = false;
                         environment = textureCube4;
                         scene.background = textureCube4;
