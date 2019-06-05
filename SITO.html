@@ -58,11 +58,11 @@
 
             <div class="col-2">
                 <p class="menuchoice">Modifica il BACKGROUND</p>
-                    <a href="#" onClick="changeAmbiente('jungle')"><img class="material" src="images/jungle.jpg" alt="jungle"></a>
+                    <a href="#" onClick="changeAmbiente('jungle2')"><img class="material" src="images/jungle2.jpg" alt="jungle2"></a>
                     <a href="#" onClick="changeAmbiente('park')"><img class="material" src="images/park.jpg" alt="park"></a>
-                    <a href="#" onClick="changeAmbiente('beach')"><img class="material" src="images/beach.jpg" alt="beach"></a>
-                    <a href="#" onClick="changeAmbiente('hotel')"><img class="material" src="images/hotel.jpg" alt="hotel"></a>
-                    <a href="#" onClick="changeAmbiente('sunset')"><img class="material" src="images/sunset.jpg" alt="sunset"></a>
+                    <a href="#" onClick="changeAmbiente('tempio')"><img class="material" src="images/tempio.jpg" alt="tempio"></a>
+                    <a href="#" onClick="changeAmbiente('distesa')"><img class="material" src="images/distesa.jpg" alt="distesa"></a>
+                    <a href="#" onClick="changeAmbiente('neve')"><img class="material" src="images/neve.jpg" alt="neve"></a>
                     <a href="#" onClick="changeAmbiente('noBack')"><img class="material" src="images/noBack.jpg" alt="noBack"></a>
                 <p>&nbsp;</p>
                 <p class="menuchoice">Controllo LUCE</p>
@@ -280,7 +280,7 @@
 
 
             var loader = new THREE.CubeTextureLoader();
-            loader.setPath( 'cubemap/Tenerife/' );
+            loader.setPath( 'cubemap/tempio/' );
             var textureCube1 = loader.load( [
                 'px.jpg', 'nx.jpg',
                 'py.jpg', 'ny.jpg',
@@ -296,7 +296,7 @@
             ] );
 
             var loader = new THREE.CubeTextureLoader();
-            loader.setPath( 'cubemap/hotel/' );
+            loader.setPath( 'cubemap/distesa/' );
             var textureCube3 = loader.load( [
                 'px.jpg', 'nx.jpg',
                 'py.jpg', 'ny.jpg',
@@ -304,7 +304,7 @@
             ] );
 
             var loader = new THREE.CubeTextureLoader();
-            loader.setPath( 'cubemap/sunset/' );
+            loader.setPath( 'cubemap/neve/' );
             var textureCube4 = loader.load( [
                 'px.jpg', 'nx.jpg',
                 'py.jpg', 'ny.jpg',
@@ -601,7 +601,7 @@
 
             function changeAmbiente(ambiente){
                 switch(ambiente){
-                    case 'jungle':
+                    case 'jungle2':
                     	defaultamb = false;
                         environment = textureCube;
                         scene.background = textureCube;
@@ -610,7 +610,7 @@
                         rimuoviModello();
                         caricaNuovoModello();
                         break;
-                    case 'beach':
+                    case 'tempio':
                     	defaultamb = false;
                         environment = textureCube1;
                         scene.background = textureCube1;
@@ -628,7 +628,7 @@
                         rimuoviModello();
                         caricaNuovoModello();
                         break;
-                    case 'hotel':
+                    case 'distesa':
                     	defaultamb = false;
                         environment = textureCube3;
                         scene.background = textureCube3;
@@ -637,7 +637,7 @@
                         rimuoviModello();
                         caricaNuovoModello();
                         break;
-                    case 'sunset':
+                    case 'neve':
                         defaultamb = false;
                         environment = textureCube4;
                         scene.background = textureCube4;
