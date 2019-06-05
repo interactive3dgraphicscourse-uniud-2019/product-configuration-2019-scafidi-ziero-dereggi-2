@@ -231,6 +231,14 @@
 
 
         <script>
+            var refreshTime=10; //millisecondi
+            var movimento_luce_lastUpdate=0;
+            var angololuce=-50;
+
+
+
+
+
             container = document.getElementById('canvas');
             larghezza = document.getElementById('canvas').clientWidth -10;
             altezza = document.getElementById('canvas').clientHeight -10;
@@ -461,9 +469,21 @@
             }
 
             function update() {
+                muoviLuce();
                 requestAnimationFrame( update );
                 stats.update();
                 render();
+            }
+
+            function muoviLuce() {
+                if(Date.now()>=(movimento_luce_lastUpdate+refreshTime)) {
+                        angololuce=angololuce+0.5;
+                        lightMesh.position.set(40*Math.cos(angololuce*Math.PI/180), 7, -40*Math.sin(angololuce*Math.PI/180));
+                        movimento_luce_lastUpdate=Date.now();
+
+                        uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+                        uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+                    }
             }
 
             function render() {
@@ -473,7 +493,6 @@
 
 
             function updateUniforms() {
-
                 uniformsL.clight.value = new THREE.Vector3( lightParameters.red * lightParameters.intensity, lightParameters.green * lightParameters.intensity, lightParameters.blue * lightParameters.intensity);
                 uniformsL.normalScale.value = new THREE.Vector2( textureParameters.normalScale, textureParameters.normalScale );
                 uniformsI.clight.value = new THREE.Vector3( lightParameters.red * lightParameters.intensity, lightParameters.green * lightParameters.intensity, lightParameters.blue * lightParameters.intensity);
