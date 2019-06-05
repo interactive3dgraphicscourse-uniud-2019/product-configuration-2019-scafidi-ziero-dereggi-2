@@ -53,6 +53,7 @@
 
             <div class="col-8 h-100">
                 <div style="height: 500px;" id="canvas"></div>
+                <p class="description" align="center">Hai selezionato: lama in <span id="mat_lama" class="description2"></span> con manico in <span id="mat_manico" class="description2"></span>.</p>
             </div>
 
 
@@ -467,6 +468,9 @@
                 stats.domElement.style.top = '0px';
                 document.body.appendChild( stats.domElement );
 
+                changeMaterial('oro');
+                changeMaterial('argento1');
+
                 }
 
             function onResize() {
@@ -540,6 +544,7 @@
             			caricaNuovoModello();
             			uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+                        document.getElementById("mat_lama").textContent="oro";
             			break;
             		case 'argento':
                       	uniformsArgento.envMap.value = environment;
@@ -550,6 +555,7 @@
             			caricaNuovoModello();
             			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+                         document.getElementById("mat_lama").textContent="argento";
             			break;
             		case 'carbone':
                     	uniformsCarbone.envMap.value = environment;
@@ -560,6 +566,7 @@
             			caricaNuovoModello();
             			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+                         document.getElementById("mat_lama").textContent="carbone o gomma?";
             			break;
             		case 'oro1':
                     	uniformsOro1.envMap.value = environment;
@@ -570,6 +577,7 @@
             			caricaNuovoModello();
             			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+                         document.getElementById("mat_manico").textContent="oro";
             			break;	
             		case 'argento1':
                     	uniformsArgento1.envMap.value = environment;
@@ -580,6 +588,7 @@
             			caricaNuovoModello();
             			uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+                        document.getElementById("mat_manico").textContent="argento";
             			break;	
             		case 'carbone1':
                       	uniformsCarbone1.envMap.value = environment;
@@ -590,6 +599,7 @@
             			caricaNuovoModello();
             			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+                         document.getElementById("mat_manico").textContent="carbone";
             			break;
             		default:
             			break;
