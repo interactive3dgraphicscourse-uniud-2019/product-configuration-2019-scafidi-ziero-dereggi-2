@@ -609,6 +609,7 @@
                         uniformsI.envMap.value = textureCube;
                         rimuoviModello();
                         caricaNuovoModello();
+                        lightMesh.visible = false;
                         break;
                     case 'tempio':
                     	defaultamb = false;
@@ -618,6 +619,7 @@
                         uniformsI.envMap.value = textureCube1;
                         rimuoviModello();
                         caricaNuovoModello();
+                        lightMesh.visible = false;
                         break;
                     case 'park':
                     	defaultamb = false;
@@ -627,6 +629,7 @@
                         uniformsI.envMap.value = textureCube2;
                         rimuoviModello();
                         caricaNuovoModello();
+                        lightMesh.visible = false;
                         break;
                     case 'distesa':
                     	defaultamb = false;
@@ -636,6 +639,7 @@
                         uniformsI.envMap.value = textureCube3;
                         rimuoviModello();
                         caricaNuovoModello();
+                        lightMesh.visible = false;
                         break;
                     case 'neve':
                         defaultamb = false;
@@ -645,12 +649,14 @@
                         uniformsI.envMap.value = textureCube4;
                         rimuoviModello();
                         caricaNuovoModello();
+                        lightMesh.visible = false;
                         break;
                     case 'noBack':
                     	defaultamb = true;
             			rimuoviModello();
                         scene.background =  0x1a3300;
                         caricaNuovoModello();
+                        lightMesh.visible = true;
                         break;      
                 }   
             }
