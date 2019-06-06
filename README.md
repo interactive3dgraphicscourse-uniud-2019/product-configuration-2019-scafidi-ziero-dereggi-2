@@ -16,6 +16,8 @@ Il progetto consiste in una applicazione web caratterizzata da u
 
 ### Modello e Texture
 
+### Shaders
+
 ## Screenshots del progetto
 
 ![splashscreen](Screenshot/splash.png)
@@ -27,7 +29,6 @@ Nella visualizzazione senza l'ambiente circostante, quindi senza cubemap....... 
 ![Luce accesa](screenshot/screenshot_lucepalla_on.png)
 
 ![Luce spenta](screenshot/screenshot_lucepalla_off.png)
-
 
 
 4. Build the application that renders the chosen 3D model, with the designed lighting setup and materials, and an user interface for selecting the material between the alternatives. **Important: you can implement this step in two different ways**:
