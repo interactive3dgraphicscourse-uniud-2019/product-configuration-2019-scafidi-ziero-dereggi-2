@@ -53,7 +53,7 @@
 
             <div class="col-8 h-100">
                 <div style="height: 500px;" id="canvas"></div>
-                <p class="description" align="center">Hai selezionato: lama in <span id="mat_lama" class="description2"></span> con manico in <span id="mat_manico" class="description2"></span>.</p>
+                <p class="description" align="center">Hai selezionato: lama in <span id="mat_lama" class="description2">argento</span> con manico in <span id="mat_manico" class="description2">oro</span>.</p>
             </div>
 
 
@@ -240,8 +240,8 @@
             var movimento_luce_lastUpdate=0;
             var angololuce=-50;
             var variazioneAngoloLuce = 0;
-
-
+            var prezzoBastone = 62;
+            var prezzoLama = 100;
 
 
 
@@ -468,8 +468,6 @@
                 stats.domElement.style.top = '0px';
                 document.body.appendChild( stats.domElement );
 
-                changeMaterial('oro');
-                changeMaterial('argento1');
 
                 }
 
@@ -533,73 +531,73 @@
 
             }
 
-            function changeMaterial(materiale){
+            function changeMaterial(materiale) {
             	switch(materiale){
             		case 'oro':
             			uniformsOro.envMap.value = environment;
                         uniformsL = uniformsOro;
             			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
             			materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
+            			prezzoLama=100;
+                        document.getElementById("mat_lama").textContent="oro";
+                        document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
-            			uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-            			uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-                        document.getElementById("mat_lama").textContent="oro";
             			break;
             		case 'argento':
                       	uniformsArgento.envMap.value = environment;
             			uniformsL = uniformsArgento;
             			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
             			materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
+            			prezzoLama=80;
+            			document.getElementById("mat_lama").textContent="argento";
+            			document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
-            			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-            			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-                         document.getElementById("mat_lama").textContent="argento";
             			break;
             		case 'carbone':
                     	uniformsCarbone.envMap.value = environment;
             			uniformsL = uniformsCarbone;
             			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
             			materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
+            			prezzoLama=50;
+            			document.getElementById("mat_lama").textContent="carbone o gomma?";
+            			document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
-            			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-            			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-                         document.getElementById("mat_lama").textContent="carbone o gomma?";
             			break;
             		case 'oro1':
                     	uniformsOro1.envMap.value = environment;
             			uniformsI = uniformsOro1;
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
+                        prezzoBastone=62;
+                        document.getElementById("mat_manico").textContent="oro";
+                        document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
-            			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-            			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-                         document.getElementById("mat_manico").textContent="oro";
             			break;	
             		case 'argento1':
                     	uniformsArgento1.envMap.value = environment;
             			uniformsI = uniformsArgento1;
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
+						prezzoBastone=42;
+            			document.getElementById("mat_manico").textContent="argento";
+            			document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
-            			uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-            			uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-                        document.getElementById("mat_manico").textContent="argento";
             			break;	
             		case 'carbone1':
                       	uniformsCarbone1.envMap.value = environment;
             			uniformsI = uniformsCarbone1;
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
+            			prezzoBastone=35;
+            			document.getElementById("mat_manico").textContent="carbone";
+            			document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
-            			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-            			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-                         document.getElementById("mat_manico").textContent="carbone";
             			break;
             		default:
             			break;
@@ -724,8 +722,12 @@
 
 
     <div>
+        <div class="buy-section">
+        	<p>TUA A SOLI <span id="prezzo">162</span>€</p>
+            <a href="#"><img src="images/buyNow.png" alt="Compra adesso" width="300"></a>
+            <p class="description">Spedizione standard gratuita tramite UDP - Spedizione assicurata tramite TCP (+ 4.50€).</p>
+        </div>
         <div class="footer">
-            <h1>&nbsp;</h1>
             <p>Come arma per lo scontro ravvicinato, i Mongoli usavano scimitarre, lance e alabarde.<br />
                 Esse consentivano colpi di taglio di enormi proporzioni,
                 ma niente è paragonabile alla leggendaria ascia di Gengis Khan!<br />
@@ -735,11 +737,6 @@
                 <p align="center"><img src="images/gengis.png" width="40%"></p>
             </p>
         	
-        </div>
-        <div class="buy-section">
-        	<p>TUA A SOLI 162€</p>
-           
-            <a href="#"><img src="images/buyNow.png" alt="Compra adesso" width="300"></a>
         </div>
         <div>
             <p class="fondo">ACME Industries SDZ, Via delle Scienze 206, Udine. tel +39 0432 555555 fax +39 0432 5550123 mail: acmeind@uniud.it</p>
