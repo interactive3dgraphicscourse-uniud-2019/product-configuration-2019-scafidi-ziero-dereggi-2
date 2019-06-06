@@ -4,6 +4,40 @@
 
 READ CAREFULLY this document BEFORE you start!
 
+
+
+
+
+
+
+
+## Controllo Luci
+Nella visualizzazione senza l'ambiente circostante, quindi senza cubemap....... TODO
+![Pulsantiera per controllo luci](screenshot/screenshot_pulsantieraluci.png)
+
+![Luce accesa](screenshot/screenshot_lucepalla_on.png)
+
+![Luce spenta](screenshot/screenshot_lucepalla_off.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Prerequisites
 
 - read carefully all slides and notes up to lecture 17 before you start. Try the proposed exercises. As you progress in the project, include also content from subsequent lectures.
