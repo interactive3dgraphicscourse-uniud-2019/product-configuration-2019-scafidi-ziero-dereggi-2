@@ -9,7 +9,9 @@ Ziero Samuele - 107201,
 De Reggi Paolo - 123783.
 
 ## Idea generale e decisioni di design
-L'idea di base è stata quella di progettare una pagina web per la pubblicizzazione di un ascia storica. Abbiamo costruito il sito in modo tale da presentare all'utente una pagina di un sito di e-commerce che permette l'acquisto del coltello sopra-descritto. La pagina sarà caratterizzata da una struttura a colonne in cui la prima sarà usata per la modifica dei materiali, la seconda mostrerà l'oggetto tridimensionale e la terza permetterà la possibilità di cambiare sfondo (cubemap). Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'oggetto e il finto pulsante per l'acquisto.
+L'idea di base è stata quella di progettare una pagina web per la pubblicizzazione di un ascia storica. Abbiamo costruito il sito in modo tale da presentare all'utente una pagina di un sito di e-commerce che permette l'acquisto dell'ascia sopra-descritta.
+La pagina sarà caratterizzata da una struttura a colonne in cui la prima sarà usata per la modifica dei materiali, la seconda mostrerà l'oggetto tridimensionale e la terza permetterà la possibilità di cambiare sfondo (cubemap), oltre che attivare degli effetti di luce particolari.
+Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'oggetto e il finto pulsante per l'acquisto.
 
 ## Progressi del progetto
 
@@ -29,7 +31,7 @@ FOTO BOZZA SITO
 
 ## Scelte di implementazione
 - Abbiamo deciso di implementare la pagina web attraverso una struttura con bootstrap, cosi da gestire in modo ottimale gli spazi della schermata html.
-- Abbiamo deciso di implementare un modello costituito da più materiali, cosi da poterli modificare e avere una scena più ricca di contenuti interattivi.
+- Abbiamo deciso di implementare un modello costituito da più materiali, così da poterli modificare e avere una scena più ricca di contenuti interattivi.
 
 ## Problemi riscontrati e soluzioni
 - Abbiamo riscontrato inizialmente un problema di caricamento dell'oggetto 3D nella pagina in quanto il formato era sbagliato per threejs, risolvendo attraverso la scelta di un modello più appropriata;
