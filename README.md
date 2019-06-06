@@ -23,11 +23,17 @@ Il progetto consiste in una applicazione web caratterizzata da u
 ![splashscreen](Screenshot/splash.png)
 
 ## Controllo Luci
-Nella visualizzazione senza l'ambiente circostante, quindi senza cubemap....... TODO
+Nella visualizzazione senza l'ambiente circostante, quindi senza cubemap, abbiamo implementato la possibilità di vedere come si comportano i materiali degli oggetti in presenza di una luce puntiforme, al netto di tutte le luci ambientali.
+
+Per attivare questo tipo di visualizzazione sono stati predisposti  
+- attivazione della luce
+- spegnimento della luce
+- attivazione/disattivazione del movimento di rotazione della luce
 ![Pulsantiera per controllo luci](screenshot/screenshot_pulsantieraluci.png)
 
+La luce, per semplicità, è stata simulata in maniera visuale da un oggetto di tipo Sphere, da cui si presuppone escano i raggi luminosi. Nella foto, infatti, è possibile visualizzare la sfera che irraggia la nostra ascia e il comportamento del materiale. La luce "accesa" è contraddistinta dal colore giallo della sfera.
 ![Luce accesa](screenshot/screenshot_lucepalla_on.png)
-
+Ovviamente se "spegniamo la luce", azzerando la sua intensità, l'oggetto risulterà completamente al buio e la sfera sarà colorata di grigio.
 ![Luce spenta](screenshot/screenshot_lucepalla_off.png)
 
 
