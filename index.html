@@ -561,7 +561,7 @@
             			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
             			materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
             			prezzoLama=50;
-            			document.getElementById("mat_lama").textContent="carbone o gomma?";
+            			document.getElementById("mat_lama").textContent="carbonio";
             			document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
@@ -594,7 +594,7 @@
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
             			prezzoBastone=35;
-            			document.getElementById("mat_manico").textContent="carbone";
+            			document.getElementById("mat_manico").textContent="carbonio";
             			document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
