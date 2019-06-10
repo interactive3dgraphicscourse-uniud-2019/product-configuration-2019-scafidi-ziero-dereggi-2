@@ -23,9 +23,7 @@ Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'o
 - Abbiamo deciso il tipo di struttura da applicare al sito e quindi come sarebbe dovuta essere la "forma" del sito;
 ![Prima bozza](screenshot/bozza.png)
 - Abbiamo iniziato a implementare il sito, fino a decidere di riprogettare la pagina utilizzando un bootstrap per riuscire a lavorare in modo più efficiente in merito alla gestione delle larghezze della pagina e quindi renderla più responsive possibile;
-![Primo sito](screenshot/inizialeSopra.png)
-![Primo sito2](screenshot/inizialeMeta.png)
-![Primo sito3](screenshot/inizialeSotto.png)
+![Primo sito](screenshot/inizialeTot.png)
 - Abbiamo iniziato l'implementazione attraverso l'inserimento degli shaders e l'applicazione delle texture;
 ![Primo sito3](screenshot/material.png)
 - Abbiamo lavorato sulle cubemap e abbiamo studiato l'inserimento delle stesse nella scena, considerando anche l'opzione senza background;
@@ -39,7 +37,8 @@ Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'o
 ![luceOn](screenshot/lucePalla_on.png)
 ![luceOFF](screenshot/lucePalla_off.png)
 - Abbiamo aggiunto delle label che permettessero all'utente di visualizzare le scelte effettuate sui materiali;
--Sistemazione codice finale e dettagli implementativi per la pulizia e l'efficienza dell'intera scena.
+- Abbiamo aggiunto una navigation bar per simulare più relaisticamente possibile, un sito di e-commerce;
+- Sistemazione codice finale e dettagli implementativi per la pulizia e l'efficienza dell'intera scena.
 
 ## Scelte di implementazione
 - Abbiamo deciso di implementare la pagina web attraverso una struttura con bootstrap, cosi da gestire in modo ottimale gli spazi della schermata html.
