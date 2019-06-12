@@ -39,12 +39,8 @@ Per attivare questo tipo di visualizzazione sono stati predisposti alcuni pulsan
 - attivazione della luce
 - spegnimento della luce
 - attivazione/disattivazione del movimento di rotazione della luce  
-![Pulsantiera per controllo luci](screenshot/screenshot_pulsantieraluci.png)
-
-La luce, per semplicità, è stata simulata in maniera visuale da un oggetto di tipo Sphere, da cui si presuppone escano i raggi luminosi. Nella foto, infatti, è possibile visualizzare la sfera che irraggia la nostra ascia e il comportamento del materiale. La luce "accesa" è contraddistinta dal colore giallo della sfera.
-![Luce accesa](screenshot/screenshot_lucepalla_on.png)
-Ovviamente se "spegniamo la luce", azzerando la sua intensità, l'oggetto risulterà completamente al buio e la sfera sarà colorata di grigio.
-![Luce spenta](screenshot/screenshot_lucepalla_off.png)
+La luce, per semplicità, è stata simulata in maniera visuale da un oggetto di tipo Sphere, da cui si presuppone escano i raggi luminosi. Nella foto, infatti, è possibile visualizzare la sfera che irraggia la nostra ascia e il comportamento del materiale. La luce "accesa" è contraddistinta dal colore giallo della sfera.  
+Ovviamente se "spegniamo la luce", azzerando la sua intensità, l'oggetto risulterà completamente al buio e la sfera sarà colorata di grigio.  
 
 
 4. Build the application that renders the chosen 3D model, with the designed lighting setup and materials, and an user interface for selecting the material between the alternatives. **Important: you can implement this step in two different ways**:
@@ -67,4 +63,7 @@ Per lo sviluppo del progetto abbiamo seguito un metodo Divide et Impera in cui l
 - Creazione relazione del progetto.
 
 ## Credits
-Per il progetto sono state utilizzate solo texture distribuite sotto licenza Creative Commons, (in particolare tutte provenienti dal sito https://freestocktextures.com) eventualmente rielaborate per massimizzare l'efficienza nel caricamento.
+Per il progetto sono state utilizzate risorse tutte sotto licenza Creative Commons o utilizzabili senza fini commerciali, in particolare:
+- il modello è stato preso dal sito web https://sketchfab.com/3d-models/decorative-battle-axe-97575b982f5944baa0c9062d8107a983
+- i modelli delle cubemap dai siti 
+- le texture dal sito web https://freestocktextures.com
