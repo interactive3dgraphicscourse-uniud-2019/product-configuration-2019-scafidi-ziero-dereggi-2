@@ -15,7 +15,7 @@ Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'o
 
 ## Progressi del progetto
 
-**PARTENZA:**
+**PARTENZA:** Siamo partiti pensando a come potessimo strutturare questo progetto: abbiamo pensato subito all'oggetto da rappresentare e dopo un brain storming abbiamo pensato di rappresentare un coltello: questo pechè un oggetto come un coltello è in generale costituito principalmente da 2 materiali: uno per la lama e uno per il manico, con proprietà diverse tra loro.
 
 **PASSI DI SVILUPPO**
 - Abbiamo scelto il modello a cui fare riferimento per il resto del progetto;
