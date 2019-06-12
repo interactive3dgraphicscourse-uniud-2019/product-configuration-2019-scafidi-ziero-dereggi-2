@@ -51,7 +51,7 @@
                     <a href="#" onClick="changeMaterial('plastic')"><img class="material" src="images/hardPlastic.jpg" alt="hardPlastic"></a>
                 <p class="menuchoice">Modifica MATERIALE dell'impugnatura</p>
                     <a href="#" onClick="changeMaterial('argento1')"><img class="material" src="images/titanio.jpg" alt="titanio"></a>
-                    <a href="#" onClick="changeMaterial('oro1')"><img class="material" src="images/oro.jpg" alt="oro"></a>
+                    <a href="#" onClick="changeMaterial('rame')"><img class="material" src="images/rame.jpg" alt="rame"></a>
                     <a href="#" onClick="changeMaterial('legno')"><img class="material" src="images/legno.jpg" alt="legno"></a>                    
                     <a href="#" onClick="changeMaterial('plastic')"><img class="material" src="images/hardPlastic.jpg" alt="hardPlastic"></a>
                     
@@ -577,6 +577,18 @@
                     irradianceMap:	{ type: "t", value: irradianceMap1},
                     };
 
+                var uniformsRame = {
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.955,0.638,0.538) },
+                    cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
+                    roughness: {type: "f", value: 0.5},
+                    normalMap:  { type: "t", value: normalMapI},
+                    normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
+                    pointLightPosition: { type: "v3", value: new THREE.Vector3() },
+                    clight: { type: "v3", value: new THREE.Vector3() },
+                    envMap: { type: "t", value: textureCube1},
+                    irradianceMap:	{ type: "t", value: irradianceMap1},
+                    };
+
 
              var uniformsLegno = {
                         specularMap: { type: "t", value: specularMapLegno},
@@ -798,6 +810,17 @@
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
                         prezzoBastone=62;
                         document.getElementById("mat_manico").textContent="oro";
+                        document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
+            			rimuoviModello();
+            			caricaNuovoModello();
+            			break;	
+                        case 'rame':
+                    	uniformsOro1.envMap.value = environment;
+            			uniformsI = uniformsRame;
+            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
+            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
+                        prezzoBastone=62;
+                        document.getElementById("mat_manico").textContent="rame";
                         document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
