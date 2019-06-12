@@ -38,6 +38,7 @@ Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'o
 ![luceOFF](screenshot/lucePalla_off.png)
 - Abbiamo aggiunto delle label che permettessero all'utente di visualizzare le scelte effettuate sui materiali;
 - Abbiamo aggiunto una navigation bar per simulare più relaisticamente possibile, un sito di e-commerce;
+- Abbiamo inserito altri tipi di materiali implementando le texture del legno
 - Sistemazione codice finale e dettagli implementativi per la pulizia e l'efficienza dell'intera scena.
 
 ## Scelte di implementazione

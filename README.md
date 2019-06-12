@@ -11,11 +11,22 @@ Team:
 Il progetto consiste in una applicazione web caratterizzata da un sito di e-commerce che permette l'acquisto di un'ascia da battaglia mongola (L'ascia di gengis khan). In particolare abbiamo sviluppato la possibilità di visualizzare il prodotto anche dopo aver modificato i suoi materiali, cosi da consentire al cliente una maggiore personalizzazione. Sarà quindi possibile variare il materiale dell'ascia, del manico e si potrà visualizzare l'oggetto nella sua interezza in vari ambienti, cosi da mostrare più precisamente possibile, come varia l'oggetto in situazioni differenti.
 
 ### Descrizione degli elementi
-- **Treno:** E' costituito da 6 blocchi 3D per la motrice e 6 per il vagone. E' costituito da 2 set di ruote posizionate al di sotto dei blocchi e da 8 cubi all'interno del vagone.
-
+- **Scelta del materiale lama:** E' costituita dalla possibilità di scegliere tra argento, oro e ??;
+- **Scelta del materiale del'asta:** E' costituita dalla possibilità di scegliere tra argento, oro e legno e ??
+- **Scelta della cubemap:** E' costituit dalla possibilità di scegliere tra 5 ambienti diversi e una versione priva di background;
+- **Comandi della luce:** Mini pannello per la gestione della luce nell'ambiente senza background che permette di visualizzare la fonte di luce e manovrarla;
+- **Area di visualizzazione del modello:** Costituita da una scena attraverso il quale si può azionare la camera e visualizzare il modello con tutte le caratteristiche scelte.
+- **Descrizione generica:** Parte sottostante alla pagina che descrive l'oggetto e simula più relisticamente possibile, un sito di e-commerce
 
 ### Modello e Texture
-
+Per il modello abbiamo utilizzato una struttura già costruita (https://sketchfab.com/3d-models/decorative-battle-axe-71c096cafedd4aecb52f1f8eaccd5146), caratterizzata da un asta e la testa dell'ascia. L'ascia ha la forma di una mezzaluna. L'asta è semi rotonda, tappata con una piastra che usa canali longitudinali. Il lato smussato è decorato con la figura di un uccello. Entrambi i lati della testa dell'ascia sono decorati con ornamenti floreali con due figure stilizzate di animali.
+La geometria del modello è caratterizzata da: 
+- Quads: 5.7k
+- Triangles: 20
+- Polygon: 1
+- converted to Triangles 11.3k
+- Vertices: 6k
+- Uploaded size: 23MB
 ### Shaders
 
 ## Screenshots del progetto
