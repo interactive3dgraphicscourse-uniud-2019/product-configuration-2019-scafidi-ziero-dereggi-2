@@ -240,6 +240,55 @@
         </script>
 
 
+        <script type="text/x-glsl" id="fragment_vetro">
+            varying vec3 vNormal;
+            varying vec3 vTangent;
+            varying vec3 vBitangent;
+            varying vec3 vPosition;
+            varying vec3 wPosition;
+            varying vec2 vUv;
+            uniform vec3 cspec;
+            uniform sampler2D normalMap;
+            uniform samplerCube envMap;
+            uniform vec2 normalScale;
+            const float PI = 3.14159;
+
+            vec3 FSchlick(float lDoth) {
+                return (cspec + (vec3(1.0)-cspec)*pow(1.0 - lDoth,5.0));
+            }
+
+        
+
+        // http://en.wikibooks.org/wiki/GLSL_Programming/Applying_Matrix_Transformations
+        vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
+            return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );
+        }
+
+            void main() {
+                vec3 normal = normalize( vNormal );
+                vec3 tangent = normalize( vTangent );
+                vec3 bitangent = normalize( vBitangent );
+                mat3 vTBN = mat3( tangent, bitangent, normal );
+                vec3 mapN = texture2D( normalMap, vUv ).xyz * 2.0 - 1.0;
+                mapN.xy = normalScale * mapN.xy;
+                vec3 n = normalize( vTBN * mapN );
+                vec3 v = normalize( -vPosition);
+                vec3 worldN = inverseTransformDirection( n, viewMatrix );
+                vec3 worldV = cameraPosition - wPosition ;
+                vec3 r = normalize( refract(-worldV,worldN,(1.0/1.52)));
+                // small quantity to prevent divisions by 0
+                float nDotv = max(dot( n, v ),0.000001);
+                vec3 fresnel = FSchlick(nDotv);
+                // negate x to account for how cubemap is displayed on background
+                vec3 envLight = textureCube( envMap, vec3(-r.x, r.yz)).rgb;
+                // texture in sRGB, linearize
+                envLight = pow( envLight, vec3(2.2));
+                vec3 outRadiance = fresnel*envLight;
+                // gamma encode the final value
+                gl_FragColor = vec4(pow( outRadiance, vec3(1.0/2.2)), 1.0);
+            }
+        </script>
+
         
 
 
@@ -567,7 +616,7 @@
 
 
             var uniformsVetro = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(0.3,0.3,0.9) },
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.8,0.8,0.8) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapL},
@@ -640,6 +689,8 @@
 
             vs = document.getElementById("vertex").textContent;
             fs = document.getElementById("fragment").textContent;
+
+            fs_vetro = document.getElementById("fragment_vetro").textContent;
 
             vs_back = document.getElementById("vertex_background").textContent;
             fs_back = document.getElementById("fragment_background").textContent;
@@ -819,7 +870,7 @@
                     case 'vetro':
                         uniformsVetro.envMap.value = environment;
                         uniformsL = uniformsVetro;
-                        lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
+                        lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs_vetro });
                         materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
                         prezzoLama=50;
                         document.getElementById("mat_lama").textContent="emerald";
