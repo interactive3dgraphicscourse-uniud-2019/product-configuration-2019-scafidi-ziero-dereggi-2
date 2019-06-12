@@ -65,6 +65,6 @@ Per lo sviluppo del progetto abbiamo seguito un metodo Divide et Impera in cui l
 
 ## Credits
 Per il progetto sono state utilizzate risorse tutte sotto licenza Creative Commons o utilizzabili senza fini commerciali, in particolare:
-- il modello è stato preso dal sito web https://sketchfab.com/3d-models/decorative-battle-axe-97575b982f5944baa0c9062d8107a983
+- il modello è stato preso dal sito web https://sketchfab.com/3d-models/decorative-battle-axe-71c096cafedd4aecb52f1f8eaccd5146
 - i modelli delle cubemap dai siti 
 - le texture dal sito web https://freestocktextures.com
