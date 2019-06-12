@@ -603,6 +603,19 @@
                         irradianceMap:	{ type: "t", value: irradianceMap1},
                     };
 
+                    var uniformsCarbonio = {
+                        specularMap: { type: "t", value: specularMapLegno},
+                        diffuseMap: { type: "t", value: diffuseMapLegno},
+                        roughnessMap:   { type: "t", value: roughnessMapLegno},
+                        pointLightPosition: { type: "v3", value: new THREE.Vector3() },
+                        clight: { type: "v3", value: new THREE.Vector3() },
+                        textureRepeat: { type: "v2", value: new THREE.Vector2(1,1) },
+                        normalMap:  { type: "t", value: normalMapI},
+                        normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
+                        envMap: { type: "t", value: textureCube1},
+                        irradianceMap:	{ type: "t", value: irradianceMap1},
+                    };
+
 
              var uniformsArgento1 = {
                     cspec:  { type: "v3", value: new THREE.Vector3(0.972,0.960,0.915) },
@@ -848,6 +861,20 @@
             			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
                          document.getElementById("mat_manico").textContent="legno";
             			break;
+
+                        case 'carbonio':
+                      	uniformsLegno.envMap.value = environment;
+                      	uniformsLegno.irradianceMap.value = irradiance;
+            			uniformsI = uniformsLegno;
+            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs_legno, fragmentShader: fs_legno });
+            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back_legno, fragmentShader: fs_back_legno});
+            			rimuoviModello();
+            			caricaNuovoModello();
+            			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+                         document.getElementById("mat_manico").textContent="carbonio";
+            			break;
+
             		default:
             			break;
             	}
