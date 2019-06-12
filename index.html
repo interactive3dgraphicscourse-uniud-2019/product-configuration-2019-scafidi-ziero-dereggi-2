@@ -49,8 +49,8 @@
                     <a href="#" onClick="changeMaterial('oro')"><img class="material" src="images/oro.jpg" alt="oro"></a>
                     <a href="#" onClick="changeMaterial('carbone')"><img class="material" src="images/carbon.jpg" alt="carbone"></a>
                 <p class="menuchoice">Modifica MATERIALE dell'impugnatura</p>
-                    <a href="#" onClick="changeMaterial('carbone1')"><img class="material" src="images/hardPlastic.jpg" alt="hardPlastic"></a>
-                    <a href="#" onClick="changeMaterial('argento1')"><img class="material" src="images/legno.jpg" alt="legno"></a>
+                    <a href="#" onClick="changeMaterial('argento1')"><img class="material" src="images/hardPlastic.jpg" alt="hardPlastic"></a>
+                    <a href="#" onClick="changeMaterial('legno')"><img class="material" src="images/legno.jpg" alt="legno"></a>
                     <a href="#" onClick="changeMaterial('oro1')"><img class="material" src="images/gomma.jpg" alt="gomma"></a>
             </div>
 
@@ -236,6 +236,166 @@
             }
         </script>
 
+
+        
+
+
+        <script type="text/x-glsl" id="vertex_legno">
+		varying vec3 vNormal;
+		varying vec3 vPosition;
+		varying vec2 uVv;
+
+		void main() {
+			vec4 vPos = modelViewMatrix * vec4( position, 1.0 );
+			vPosition = vPos.xyz;
+			vNormal = normalMatrix * normal;
+			uVv = uv;
+			gl_Position = projectionMatrix * vPos;
+		}
+		</script>
+
+		<script type="text/x-glsl" id="fragment_legno">
+			varying vec3 vNormal;
+			varying vec3 vPosition;
+			varying vec2 uVv;
+			uniform vec3 pointLightPosition; // in world space
+			uniform vec3 clight;
+			uniform sampler2D specularMap;
+			uniform sampler2D diffuseMap;
+			uniform sampler2D roughnessMap;
+			uniform vec2 textureRepeat;
+			const float PI = 3.14159;
+
+			vec3 cdiff;
+			vec3 cspec;
+			float roughness;
+
+			vec3 FSchlick(float lDoth) {
+				return (cspec + (vec3(1.0)-cspec)*pow(1.0 - lDoth,5.0));
+			}
+
+			float DGGX(float nDoth, float alpha) {
+				float alpha2 = alpha*alpha;
+				float d = nDoth*nDoth*(alpha2-1.0)+1.0;
+				return (  alpha2 / (PI*d*d));
+			}
+
+			float G1(float dotProduct, float k) {
+				return (dotProduct / (dotProduct*(1.0-k) + k) );
+			}
+
+			float GSmith(float nDotv, float nDotl) {
+					float k = roughness*roughness;
+					return G1(nDotl,k)*G1(nDotv,k);
+			}
+
+			void main() {
+				vec4 lPosition = viewMatrix * vec4( pointLightPosition, 1.0 );
+				vec3 l = normalize(lPosition.xyz - vPosition.xyz);
+				vec3 n = normalize( vNormal );  // interpolation destroys normalization, so we have to normalize
+				vec3 v = normalize( -vPosition);
+				vec3 h = normalize( v + l);
+				// small quantity to prevent divisions by 0
+				float nDotl = max(dot( n, l ),0.000001);
+				float lDoth = max(dot( l, h ),0.000001);
+				float nDoth = max(dot( n, h ),0.000001);
+				float vDoth = max(dot( v, h ),0.000001);
+				float nDotv = max(dot( n, v ),0.000001);
+
+				cdiff = texture2D( diffuseMap, uVv*textureRepeat ).rgb;
+				// texture in sRGB, linearize
+				cdiff = pow( cdiff, vec3(2.2));
+				cspec = texture2D( specularMap, uVv*textureRepeat ).rgb;
+				// texture in sRGB, linearize
+				cspec = pow( cspec, vec3(2.2));
+				roughness = texture2D( roughnessMap, uVv*textureRepeat).r; // no need to linearize roughness map
+
+				vec3 fresnel = FSchlick(lDoth);
+				vec3 BRDF = (vec3(1.0)-fresnel)*cdiff/PI + fresnel*GSmith(nDotv,nDotl)*DGGX(nDoth,roughness*roughness)/
+					(4.0*nDotl*nDotv);
+				vec3 outRadiance = PI* clight * nDotl * BRDF;
+				// gamma encode the final value
+				gl_FragColor = vec4(pow( outRadiance, vec3(1.0/2.2)), 1.0);
+			}
+		</script>
+
+
+
+		<script type="text/x-glsl" id="vertex_irr">
+		attribute vec4 tangent;
+		varying vec3 vNormal;
+		varying vec3 vPosition;
+		varying vec3 wPosition;
+		varying vec3 vTangent;
+		varying vec3 vBitangent;
+		varying vec2 vUv;
+
+		void main() {
+			vec4 vPos = modelViewMatrix * vec4( position, 1.0 );
+			vPosition = vPos.xyz;
+			wPosition = (modelMatrix * vec4( position, 1.0 )).xyz;
+			vNormal = normalize(normalMatrix * normal);
+			vec3 objectTangent = vec3( tangent.xyz );
+			vec3 transformedTangent = normalMatrix * objectTangent;
+			vTangent = normalize( transformedTangent );
+			vBitangent = normalize( cross( vNormal, vTangent ) * tangent.w );
+			vUv = uv;
+			gl_Position = projectionMatrix * vPos;
+		}
+		</script>
+
+		<script type="text/x-glsl" id="fragment_irr">
+			varying vec3 vNormal;
+			varying vec3 vTangent;
+			varying vec3 vBitangent;
+			varying vec3 vPosition;
+			varying vec3 wPosition;
+			varying vec2 vUv;
+			uniform sampler2D diffuseMap;
+			uniform sampler2D normalMap;
+			uniform samplerCube irradianceMap;
+			uniform vec2 normalScale;
+			const float PI = 3.14159;
+
+			uniform vec2 textureRepeat;
+
+			vec3 cdiff;
+
+		
+
+		// http://en.wikibooks.org/wiki/GLSL_Programming/Applying_Matrix_Transformations
+		vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
+			return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );
+		}
+
+			void main() {
+				vec3 normal = normalize( vNormal );
+				vec3 tangent = normalize( vTangent );
+				vec3 bitangent = normalize( vBitangent );
+				mat3 vTBN = mat3( tangent, bitangent, normal );
+				vec3 mapN = texture2D( normalMap, vUv ).xyz * 2.0 - 1.0;
+				mapN.xy = normalScale * mapN.xy;
+				vec3 n = normalize( vTBN * mapN );
+				vec3 v = normalize( -vPosition);
+				vec3 worldN = inverseTransformDirection( n, viewMatrix );
+				vec3 worldV = cameraPosition - wPosition ;
+				vec3 r = normalize( reflect(-worldV,worldN));
+				// small quantity to prevent divisions by 0
+				float nDotv = max(dot( n, v ),0.000001);
+				// negate x to account for how cubemap is displayed on background
+				vec3 irradiance = textureCube( irradianceMap, worldN).rgb;
+				// texture in sRGB, linearize
+				irradiance = pow( irradiance, vec3(2.2));
+				cdiff = texture2D( diffuseMap, vUv  *textureRepeat).rgb;
+				// texture in sRGB, linearize
+				cdiff = pow( cdiff, vec3(2.2));
+				vec3 outRadiance = cdiff*irradiance;
+				// gamma encode the final value
+				gl_FragColor = vec4(pow( outRadiance, vec3(1.0/2.2)), 1.0);
+			}
+		</script>
+
+
         
 
 
@@ -273,6 +433,9 @@
 
             var normalMapI = loadTexture( "modello/textures/Cylinder001 [Normal].png" );
             var normalMapL = loadTexture( "modello/textures/Box002 [Normal].png" );
+            var specularMapLegno = loadTexture("modello/textures/Wood_Specular.png");
+            var diffuseMapLegno = loadTexture("modello/textures/Wood_Diffuse.png");
+            var roughnessMapLegno = loadTexture("modello/textures/Wood_Roughness.png");
 
 //------------------------------------------ background
 			var loader = new THREE.CubeTextureLoader();
@@ -282,6 +445,14 @@
                 'py.jpg', 'ny.jpg',
                 'pz.jpg', 'nz.jpg'
             ] );
+
+            var loader = new THREE.CubeTextureLoader();
+            loader.setPath( 'cubemap/jungle2Irradiance/' );
+			var irradianceMap = loader.load( [
+					'px.jpg', 'nx.jpg',
+					'py.jpg', 'ny.jpg',
+					'pz.jpg', 'nz.jpg'
+			] );
 
 
             var loader = new THREE.CubeTextureLoader();
@@ -293,12 +464,30 @@
             ] );
 
             var loader = new THREE.CubeTextureLoader();
+            loader.setPath( 'cubemap/tempioIrradiance/' );
+			var irradianceMap1 = loader.load( [
+					'px.jpg', 'nx.jpg',
+					'py.jpg', 'ny.jpg',
+					'pz.jpg', 'nz.jpg'
+			] );
+
+
+            var loader = new THREE.CubeTextureLoader();
             loader.setPath( 'cubemap/Yokohama/' );
             var textureCube2 = loader.load( [
                 'px.jpg', 'nx.jpg',
                 'py.jpg', 'ny.jpg',
                 'pz.jpg', 'nz.jpg'
             ] );
+
+            var loader = new THREE.CubeTextureLoader();
+            loader.setPath( 'cubemap/YokohamaIrradiance/' );
+			var irradianceMap2 = loader.load( [
+					'px.jpg', 'nx.jpg',
+					'py.jpg', 'ny.jpg',
+					'pz.jpg', 'nz.jpg'
+			] );
+
 
             var loader = new THREE.CubeTextureLoader();
             loader.setPath( 'cubemap/distesa/' );
@@ -309,12 +498,30 @@
             ] );
 
             var loader = new THREE.CubeTextureLoader();
+            loader.setPath( 'cubemap/distesaIrradiance/' );
+			var irradianceMap3 = loader.load( [
+					'px.jpg', 'nx.jpg',
+					'py.jpg', 'ny.jpg',
+					'pz.jpg', 'nz.jpg'
+			] );
+
+
+         
+            var loader = new THREE.CubeTextureLoader();
             loader.setPath( 'cubemap/neve/' );
             var textureCube4 = loader.load( [
                 'px.jpg', 'nx.jpg',
                 'py.jpg', 'ny.jpg',
                 'pz.jpg', 'nz.jpg'
             ] );
+
+            var loader = new THREE.CubeTextureLoader();
+            loader.setPath( 'cubemap/neveIrradiance/' );
+			var irradianceMap4 = loader.load( [
+					'px.jpg', 'nx.jpg',
+					'py.jpg', 'ny.jpg',
+					'pz.jpg', 'nz.jpg'
+			] );
 
             scene.background = textureCube1;
 
@@ -333,8 +540,8 @@
 
 
              var uniformsCarbone = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
-                    cdiff:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.541931,0.496791,0.449419) },
+                    cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapL},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
@@ -352,7 +559,7 @@
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
-                     envMap: { type: "t", value: textureCube1},
+                    envMap: { type: "t", value: textureCube1},
                     };
 
              var uniformsOro1 = {
@@ -364,18 +571,21 @@
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
                     envMap: { type: "t", value: textureCube1},
+                    irradianceMap:	{ type: "t", value: irradianceMap1},
                     };
 
 
-             var uniformsCarbone1 = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
-                    cdiff:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
-                    roughness: {type: "f", value: 0.5},
-                    normalMap:  { type: "t", value: normalMapI},
-                    normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
-                    pointLightPosition: { type: "v3", value: new THREE.Vector3() },
-                    clight: { type: "v3", value: new THREE.Vector3() },
-                    envMap: { type: "t", value: textureCube1},
+             var uniformsLegno = {
+                        specularMap: { type: "t", value: specularMapLegno},
+                        diffuseMap: { type: "t", value: diffuseMapLegno},
+                        roughnessMap:   { type: "t", value: roughnessMapLegno},
+                        pointLightPosition: { type: "v3", value: new THREE.Vector3() },
+                        clight: { type: "v3", value: new THREE.Vector3() },
+                        textureRepeat: { type: "v2", value: new THREE.Vector2(1,1) },
+                        normalMap:  { type: "t", value: normalMapI},
+                        normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
+                        envMap: { type: "t", value: textureCube1},
+                        irradianceMap:	{ type: "t", value: irradianceMap1},
                     };
 
 
@@ -388,14 +598,16 @@
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
                     envMap: { type: "t", value: textureCube1},
+                    irradianceMap:	{ type: "t", value: irradianceMap1},
                     };
 
-             
+            
 
 
             var uniformsL = uniformsArgento;
             var uniformsI = uniformsOro1;
             var environment = textureCube1;
+            var irradiance = irradianceMap1;
             var defaultamb = false;
 
             vs = document.getElementById("vertex").textContent;
@@ -403,6 +615,12 @@
 
             vs_back = document.getElementById("vertex_background").textContent;
             fs_back = document.getElementById("fragment_background").textContent;
+
+            vs_legno = document.getElementById("vertex_irr").textContent;
+            fs_legno = document.getElementById("fragment_irr").textContent;
+
+            vs_back_legno = document.getElementById("vertex_legno").textContent;
+            fs_back_legno = document.getElementById("fragment_legno").textContent;
 
             var lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
             lamaMaterial.vertexTangents = true;
@@ -592,16 +810,17 @@
             			rimuoviModello();
             			caricaNuovoModello();
             			break;	
-            		case 'carbone1':
-                      	uniformsCarbone1.envMap.value = environment;
-            			uniformsI = uniformsCarbone1;
-            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
-            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
-            			prezzoBastone=35;
-            			document.getElementById("mat_manico").textContent="carbonio";
-            			document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
+            		case 'legno':
+                      	uniformsLegno.envMap.value = environment;
+                      	uniformsLegno.irradianceMap.value = irradiance;
+            			uniformsI = uniformsLegno;
+            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs_legno, fragmentShader: fs_legno });
+            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back_legno, fragmentShader: fs_back_legno});
             			rimuoviModello();
             			caricaNuovoModello();
+            			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+            			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
+                         document.getElementById("mat_manico").textContent="legno";
             			break;
             		default:
             			break;
@@ -616,9 +835,11 @@
                     case 'jungle2':
                     	defaultamb = false;
                         environment = textureCube;
+                        irradiance = irradianceMap;
                         scene.background = textureCube;
                         uniformsL.envMap.value = textureCube;
                         uniformsI.envMap.value = textureCube;
+                        uniformsI.irradianceMap = irradianceMap;
                         rimuoviModello();
                         caricaNuovoModello();
                         lightMesh.visible = false;
@@ -626,9 +847,11 @@
                     case 'tempio':
                     	defaultamb = false;
                         environment = textureCube1;
+                        irradiance = irradianceMap1;
                         scene.background = textureCube1;
                         uniformsL.envMap.value = textureCube1;
                         uniformsI.envMap.value = textureCube1;
+                        uniformsI.irradianceMap = irradianceMap1;
                         rimuoviModello();
                         caricaNuovoModello();
                         lightMesh.visible = false;
@@ -636,9 +859,11 @@
                     case 'park':
                     	defaultamb = false;
                         environment = textureCube2;
+                        irradiance = irradianceMap2;
                         scene.background = textureCube2;
                         uniformsL.envMap.value = textureCube2;
                         uniformsI.envMap.value = textureCube2;
+                        uniformsI.irradianceMap = irradianceMap2;
                         rimuoviModello();
                         caricaNuovoModello();
                         lightMesh.visible = false;
@@ -646,9 +871,11 @@
                     case 'distesa':
                     	defaultamb = false;
                         environment = textureCube3;
+                        irradiance = irradianceMap3;
                         scene.background = textureCube3;
                         uniformsL.envMap.value = textureCube3;
                         uniformsI.envMap.value = textureCube3;
+                        uniformsI.irradianceMap = irradianceMap3;
                         rimuoviModello();
                         caricaNuovoModello();
                         lightMesh.visible = false;
@@ -656,9 +883,11 @@
                     case 'neve':
                         defaultamb = false;
                         environment = textureCube4;
+                        irradiance = irradianceMap4;
                         scene.background = textureCube4;
                         uniformsL.envMap.value = textureCube4;
                         uniformsI.envMap.value = textureCube4;
+                        uniformsI.irradianceMap = irradianceMap4;
                         rimuoviModello();
                         caricaNuovoModello();
                         lightMesh.visible = false;
