@@ -47,10 +47,10 @@
                 <p class="menuchoice">Modifica il MATERIALE della lama</p>
                     <a href="#" onClick="changeMaterial('argento')"><img class="material" src="images/metal.jpg" alt="argento"></a>
                     <a href="#" onClick="changeMaterial('oro')"><img class="material" src="images/oro.jpg" alt="oro"></a>
-                    <a href="#" onClick="changeMaterial('glass')"><img class="material" src="images/glass.jpg" alt="glass"></a>
-                    <a href="#" onClick="changeMaterial('emerald')"><img class="material" src="images/emerald.jpg" alt="emerald"></a>
+                    <a href="#" onClick="changeMaterial('vetro')"><img class="material" src="images/glass.jpg" alt="glass"></a>
+                    <a href="#" onClick="changeMaterial('smeraldo')"><img class="material" src="images/emerald.jpg" alt="emerald"></a>
                 <p class="menuchoice">Modifica MATERIALE dell'impugnatura</p>
-                    <a href="#" onClick="changeMaterial('argento1')"><img class="material" src="images/titanio.jpg" alt="titanio"></a>
+                    <a href="#" onClick="changeMaterial('titanio')"><img class="material" src="images/titanio.jpg" alt="titanio"></a>
                     <a href="#" onClick="changeMaterial('rame')"><img class="material" src="images/rame.jpg" alt="rame"></a>
                     <a href="#" onClick="changeMaterial('legno')"><img class="material" src="images/legno.jpg" alt="legno"></a>                    
                     <a href="#" onClick="changeMaterial('carbonio')"><img class="material" src="images/carbon.jpg" alt="carbonio"></a>
@@ -542,7 +542,7 @@
                     };
 
 
-             var uniformsEmerald = {
+             var uniformsSmeraldo = {
                     cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.496791,0.449419) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
@@ -565,8 +565,21 @@
                     envMap: { type: "t", value: textureCube1},
                     };
 
-             var uniformsOro1 = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(1.022,0.782,0.344) },
+
+            var uniformsVetro = {
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.3,0.3,0.9) },
+                    cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
+                    roughness: {type: "f", value: 0.5},
+                    normalMap:  { type: "t", value: normalMapL},
+                    normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
+                    pointLightPosition: { type: "v3", value: new THREE.Vector3() },
+                    clight: { type: "v3", value: new THREE.Vector3() },
+                    envMap: { type: "t", value: textureCube1},
+                    };
+
+
+             var uniformsTitanio = {
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.541931,0.496791,0.449419) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapI},
@@ -604,8 +617,8 @@
                     };
 
 
-             var uniformsArgento1 = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(0.972,0.960,0.915) },
+             var uniformsCarbonio = {
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapI},
@@ -620,7 +633,7 @@
 
 
             var uniformsL = uniformsArgento;
-            var uniformsI = uniformsOro1;
+            var uniformsI = uniformsRame;
             var environment = textureCube1;
             var irradiance = irradianceMap1;
             var defaultamb = false;
@@ -792,9 +805,9 @@
             			rimuoviModello();
             			caricaNuovoModello();
             			break;
-            		case 'emerald':
-                    	uniformsEmerald.envMap.value = environment;
-            			uniformsL = uniformsEmerald;
+            		case 'smeraldo':
+                    	uniformsSmeraldo.envMap.value = environment;
+            			uniformsL = uniformsSmeraldo;
             			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
             			materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
             			prezzoLama=50;
@@ -803,9 +816,20 @@
             			rimuoviModello();
             			caricaNuovoModello();
             			break;
-            		case 'oro1':
-                    	uniformsOro1.envMap.value = environment;
-            			uniformsI = uniformsOro1;
+                    case 'vetro':
+                        uniformsVetro.envMap.value = environment;
+                        uniformsL = uniformsVetro;
+                        lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
+                        materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
+                        prezzoLama=50;
+                        document.getElementById("mat_lama").textContent="emerald";
+                        document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
+                        rimuoviModello();
+                        caricaNuovoModello();
+                        break;
+            		case 'titanio':
+                    	uniformsTitanio.envMap.value = environment;
+            			uniformsI = uniformsTitanio;
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
                         prezzoBastone=62;
@@ -814,8 +838,8 @@
             			rimuoviModello();
             			caricaNuovoModello();
             			break;	
-                        case 'rame':
-                    	uniformsOro1.envMap.value = environment;
+                    case 'rame':
+                    	uniformsRame.envMap.value = environment;
             			uniformsI = uniformsRame;
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
@@ -825,9 +849,9 @@
             			rimuoviModello();
             			caricaNuovoModello();
             			break;	
-            		case 'argento1':
-                    	uniformsArgento1.envMap.value = environment;
-            			uniformsI = uniformsArgento1;
+            		case 'carbonio':
+                    	uniformsCarbonio.envMap.value = environment;
+            			uniformsI = uniformsCarbonio;
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
 						prezzoBastone=42;
