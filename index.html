@@ -47,13 +47,13 @@
                 <p class="menuchoice">Modifica il MATERIALE della lama</p>
                     <a href="#" onClick="changeMaterial('argento')"><img class="material" src="images/metal.jpg" alt="argento"></a>
                     <a href="#" onClick="changeMaterial('oro')"><img class="material" src="images/oro.jpg" alt="oro"></a>
-                    <a href="#" onClick="changeMaterial('carbone')"><img class="material" src="images/glass.jpg" alt="glass"></a>
-                    <a href="#" onClick="changeMaterial('plastic')"><img class="material" src="images/hardPlastic.jpg" alt="hardPlastic"></a>
+                    <a href="#" onClick="changeMaterial('glass')"><img class="material" src="images/glass.jpg" alt="glass"></a>
+                    <a href="#" onClick="changeMaterial('emerald')"><img class="material" src="images/emerald.jpg" alt="emerald"></a>
                 <p class="menuchoice">Modifica MATERIALE dell'impugnatura</p>
                     <a href="#" onClick="changeMaterial('argento1')"><img class="material" src="images/titanio.jpg" alt="titanio"></a>
                     <a href="#" onClick="changeMaterial('rame')"><img class="material" src="images/rame.jpg" alt="rame"></a>
                     <a href="#" onClick="changeMaterial('legno')"><img class="material" src="images/legno.jpg" alt="legno"></a>                    
-                    <a href="#" onClick="changeMaterial('plastic')"><img class="material" src="images/hardPlastic.jpg" alt="hardPlastic"></a>
+                    <a href="#" onClick="changeMaterial('carbonio')"><img class="material" src="images/carbon.jpg" alt="carbonio"></a>
                     
             </div>
 
@@ -542,8 +542,8 @@
                     };
 
 
-             var uniformsCarbone = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(0.541931,0.496791,0.449419) },
+             var uniformsEmerald = {
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.496791,0.449419) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapL},
@@ -792,13 +792,13 @@
             			rimuoviModello();
             			caricaNuovoModello();
             			break;
-            		case 'carbone':
-                    	uniformsCarbone.envMap.value = environment;
-            			uniformsL = uniformsCarbone;
+            		case 'emerald':
+                    	uniformsEmerald.envMap.value = environment;
+            			uniformsL = uniformsEmerald;
             			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
             			materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
             			prezzoLama=50;
-            			document.getElementById("mat_lama").textContent="carbonio";
+            			document.getElementById("mat_lama").textContent="emerald";
             			document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
