@@ -47,10 +47,10 @@
                 <p class="menuchoice">Modifica il MATERIALE della lama</p>
                     <a href="#" onClick="changeMaterial('argento')"><img class="material" src="images/metal.jpg" alt="argento"></a>
                     <a href="#" onClick="changeMaterial('oro')"><img class="material" src="images/oro.jpg" alt="oro"></a>
-                    <a href="#" onClick="changeMaterial('glass')"><img class="material" src="images/glass.jpg" alt="glass"></a>
-                    <a href="#" onClick="changeMaterial('emerald')"><img class="material" src="images/emerald.jpg" alt="emerald"></a>
+                    <a href="#" onClick="changeMaterial('vetro')"><img class="material" src="images/glass.jpg" alt="glass"></a>
+                    <a href="#" onClick="changeMaterial('smeraldo')"><img class="material" src="images/emerald.jpg" alt="emerald"></a>
                 <p class="menuchoice">Modifica MATERIALE dell'impugnatura</p>
-                    <a href="#" onClick="changeMaterial('argento1')"><img class="material" src="images/titanio.jpg" alt="titanio"></a>
+                    <a href="#" onClick="changeMaterial('titanio')"><img class="material" src="images/titanio.jpg" alt="titanio"></a>
                     <a href="#" onClick="changeMaterial('rame')"><img class="material" src="images/rame.jpg" alt="rame"></a>
                     <a href="#" onClick="changeMaterial('legno')"><img class="material" src="images/legno.jpg" alt="legno"></a>                    
                     <a href="#" onClick="changeMaterial('carbonio')"><img class="material" src="images/carbon.jpg" alt="carbonio"></a>
@@ -239,6 +239,127 @@
             }
         </script>
 
+
+        <script type="text/x-glsl" id="fragment_vetro1">
+            varying vec3 vNormal;
+            varying vec3 vTangent;
+            varying vec3 vBitangent;
+            varying vec3 vPosition;
+            varying vec3 wPosition;
+            varying vec2 vUv;
+            uniform vec3 cspec;
+            uniform sampler2D normalMap;
+            uniform samplerCube envMap;
+            uniform vec2 normalScale;
+            const float PI = 3.14159;
+
+            vec3 FSchlick(float lDoth) {
+                return (cspec + (vec3(1.0)-cspec)*pow(1.0 - lDoth,5.0));
+            }
+
+        
+
+        // http://en.wikibooks.org/wiki/GLSL_Programming/Applying_Matrix_Transformations
+        vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
+            return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );
+        }
+
+            void main() {
+                vec3 normal = normalize( vNormal );
+                vec3 tangent = normalize( vTangent );
+                vec3 bitangent = normalize( vBitangent );
+                mat3 vTBN = mat3( tangent, bitangent, normal );
+                vec3 mapN = texture2D( normalMap, vUv ).xyz * 2.0 - 1.0;
+                //mapN.xy = normalScale * mapN.xy;
+                vec3 n = normalize( vTBN * mapN );
+                vec3 v = normalize( -vPosition);
+                vec3 worldN = inverseTransformDirection( n, viewMatrix );
+                vec3 worldV = cameraPosition - wPosition ;
+                vec3 r = normalize( refract(-worldV,worldN,(1.0/1.52)));
+                // small quantity to prevent divisions by 0
+                float nDotv = max(dot( n, v ),0.000001);
+                vec3 fresnel = FSchlick(nDotv);
+                // negate x to account for how cubemap is displayed on background
+                vec3 envLight = textureCube( envMap, vec3(-r.x, r.yz)).rgb;
+                // texture in sRGB, linearize
+                envLight = pow( envLight, vec3(2.2));
+                vec3 outRadiance = fresnel*envLight;
+                // gamma encode the final value
+                gl_FragColor = vec4(pow( outRadiance, vec3(1.0/2.2)), 1.0);
+            }
+        </script>
+
+
+        <script type="text/x-glsl" id="fragment_vetro">
+            precision highp float;
+            precision highp int;
+            varying vec3 vNormal;
+            varying vec3 vTangent;
+            varying vec3 vBitangent;
+            varying vec3 vPosition;
+            varying vec2 vUv;
+            uniform vec3 cspec;
+            uniform sampler2D normalMap;
+            uniform samplerCube envMap;
+            uniform vec2 normalScale;
+            uniform float roughness;
+
+            const float PI = 3.14159;
+            #define saturate(a) clamp( a, 0.0, 1.0 )
+
+            float pow2( const in float x ) { return x*x; }
+
+            float getSpecularMIPLevel( const in float blinnShininessExponent, const in int maxMIPLevel ) {
+                float maxMIPLevelScalar = float( maxMIPLevel );
+                float desiredMIPLevel = maxMIPLevelScalar - 0.79248 - 0.5 * log2( pow2( blinnShininessExponent ) + 1.0 );
+                return clamp( desiredMIPLevel, 0.0, maxMIPLevelScalar );
+            }
+
+            float GGXRoughnessToBlinnExponent( const in float ggxRoughness ) {
+                return ( 2.0 / pow2( ggxRoughness + 0.0001 ) - 2.0 );
+            }
+
+            // http://en.wikibooks.org/wiki/GLSL_Programming/Applying_Matrix_Transformations
+            vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
+                return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );
+            }
+
+            vec3 BRDF_Specular_GGX_Environment( vec3 normal, vec3 viewDir, const in vec3 cspec, const in float roughness ) {
+
+                float dotNV = saturate( dot( normal, viewDir ) );
+                const vec4 c0 = vec4( - 1, - 0.0275, - 0.572, 0.022 );
+                const vec4 c1 = vec4( 1, 0.0425, 1.04, - 0.04 );
+                vec4 r = roughness * c0 + c1;
+                float a004 = min( r.x * r.x, exp2( - 9.28 * dotNV ) ) * r.x + r.y;
+                vec2 AB = vec2( -1.04, 1.04 ) * a004 + r.zw;
+                return cspec * AB.x + AB.y;
+
+            }
+
+            void main() {
+                vec3 normal = normalize( vNormal );
+                vec3 tangent = normalize( vTangent );
+                vec3 bitangent = normalize( vBitangent );
+                mat3 vTBN = mat3( tangent, bitangent, normal );
+                vec3 mapN = texture2D( normalMap, vUv ).xyz * 2.0 - 1.0;
+                mapN.xy = normalScale * mapN.xy;
+                vec3 n = normalize( vTBN * mapN );
+                vec3 v = normalize( -vPosition);
+                vec3 vReflect = reflect(vPosition,n);
+                vec3 r = inverseTransformDirection( vReflect, viewMatrix );
+
+                float blinnShininessExponent = GGXRoughnessToBlinnExponent(roughness);
+                float specularMIPLevel = getSpecularMIPLevel(blinnShininessExponent,8 );
+
+                vec3 envLight = textureCubeLodEXT( envMap, vec3(-r.x, r.yz), specularMIPLevel ).rgb;
+                // texture in sRGB, linearize
+                envLight = pow( envLight, vec3(2.2));
+                vec3 outRadiance = envLight*BRDF_Specular_GGX_Environment(n, v, cspec, roughness);
+                // gamma encode the final value
+                gl_FragColor = vec4(pow( outRadiance, vec3(1.0/2.2)), 1.0);
+                //gl_FragColor = vec4(r,1.0);
+            }
+        </script>
 
         
 
@@ -542,7 +663,7 @@
                     };
 
 
-             var uniformsEmerald = {
+             var uniformsSmeraldo = {
                     cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.496791,0.449419) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
@@ -565,8 +686,21 @@
                     envMap: { type: "t", value: textureCube1},
                     };
 
-             var uniformsOro1 = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(1.022,0.782,0.344) },
+
+            var uniformsVetro = {
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.5,0.5,0.5) },
+                    cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
+                    roughness: {type: "f", value: 0.5},
+                    normalMap:  { type: "t", value: normalMapL},
+                    normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
+                    pointLightPosition: { type: "v3", value: new THREE.Vector3() },
+                    clight: { type: "v3", value: new THREE.Vector3() },
+                    envMap: { type: "t", value: textureCube1},
+                    };
+
+
+             var uniformsTitanio = {
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.541931,0.496791,0.449419) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapI},
@@ -617,8 +751,8 @@
                     };
 
 
-             var uniformsArgento1 = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(0.972,0.960,0.915) },
+             var uniformsCarbonio = {
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapI},
@@ -629,17 +763,21 @@
                     irradianceMap:	{ type: "t", value: irradianceMap1},
                     };
 
-            
+            materialExtensions = {
+                shaderTextureLOD: true // set to use shader texture LOD
+            };
 
 
             var uniformsL = uniformsArgento;
-            var uniformsI = uniformsOro1;
+            var uniformsI = uniformsRame;
             var environment = textureCube1;
             var irradiance = irradianceMap1;
             var defaultamb = false;
 
             vs = document.getElementById("vertex").textContent;
             fs = document.getElementById("fragment").textContent;
+
+            fs_vetro = document.getElementById("fragment_vetro").textContent;
 
             vs_back = document.getElementById("vertex_background").textContent;
             fs_back = document.getElementById("fragment_background").textContent;
@@ -805,9 +943,9 @@
             			rimuoviModello();
             			caricaNuovoModello();
             			break;
-            		case 'emerald':
-                    	uniformsEmerald.envMap.value = environment;
-            			uniformsL = uniformsEmerald;
+            		case 'smeraldo':
+                    	uniformsSmeraldo.envMap.value = environment;
+            			uniformsL = uniformsSmeraldo;
             			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
             			materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
             			prezzoLama=50;
@@ -816,9 +954,20 @@
             			rimuoviModello();
             			caricaNuovoModello();
             			break;
-            		case 'oro1':
-                    	uniformsOro1.envMap.value = environment;
-            			uniformsI = uniformsOro1;
+                    case 'vetro':
+                        uniformsVetro.envMap.value = environment;
+                        uniformsL = uniformsVetro;
+                        lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs_vetro, extensions: materialExtensions });
+                        materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
+                        prezzoLama=50;
+                        document.getElementById("mat_lama").textContent="emerald";
+                        document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
+                        rimuoviModello();
+                        caricaNuovoModello();
+                        break;
+            		case 'titanio':
+                    	uniformsTitanio.envMap.value = environment;
+            			uniformsI = uniformsTitanio;
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
                         prezzoBastone=62;
@@ -827,8 +976,8 @@
             			rimuoviModello();
             			caricaNuovoModello();
             			break;	
-                        case 'rame':
-                    	uniformsOro1.envMap.value = environment;
+                    case 'rame':
+                    	uniformsRame.envMap.value = environment;
             			uniformsI = uniformsRame;
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
@@ -838,9 +987,9 @@
             			rimuoviModello();
             			caricaNuovoModello();
             			break;	
-            		case 'argento1':
-                    	uniformsArgento1.envMap.value = environment;
-            			uniformsI = uniformsArgento1;
+            		case 'carbonio':
+                    	uniformsCarbonio.envMap.value = environment;
+            			uniformsI = uniformsCarbonio;
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
 						prezzoBastone=42;
