@@ -39,6 +39,7 @@ Per attivare questo tipo di visualizzazione sono stati predisposti alcuni pulsan
 - attivazione della luce
 - spegnimento della luce
 - attivazione/disattivazione del movimento di rotazione della luce  
+
 La luce, per semplicità, è stata simulata in maniera visuale da un oggetto di tipo Sphere, da cui si presuppone escano i raggi luminosi. Nella foto, infatti, è possibile visualizzare la sfera che irraggia la nostra ascia e il comportamento del materiale. La luce "accesa" è contraddistinta dal colore giallo della sfera.  
 Ovviamente se "spegniamo la luce", azzerando la sua intensità, l'oggetto risulterà completamente al buio e la sfera sarà colorata di grigio.  
 
