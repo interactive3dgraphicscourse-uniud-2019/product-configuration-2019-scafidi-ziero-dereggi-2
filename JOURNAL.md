@@ -22,7 +22,7 @@ Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'o
 ![modello](screenshot/blade.png)
 - Abbiamo deciso il tipo di struttura da applicare al sito e quindi come sarebbe dovuta essere la "forma" del sito;
 ![Prima bozza](screenshot/bozza.png)
-- Abbiamo iniziato a implementare il sito, fino a decidere di riprogettare la pagina utilizzando un bootstrap per riuscire a lavorare in modo più efficiente in merito alla gestione delle larghezze della pagina e quindi renderla più responsive possibile;
+- Abbiamo iniziato a implementare il sito, fino a decidere di riprogettare la pagina utilizzando un bootstrap per riuscire a lavorare in modo più efficiente in merito alla gestione delle larghezze della pagina e quindi renderla più responsive possibile;  
 ![Primo sito](screenshot/inizialeTot.png)
 - Abbiamo iniziato l'implementazione attraverso l'inserimento degli shaders e l'applicazione delle texture;
 ![Primo sito3](screenshot/material.png)
@@ -32,7 +32,7 @@ Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'o
 - Abbiamo deciso di cambiare modello, quindi abbiamo ricalibrato l'intero progetto per la nuova sistemazione;
 ![modello2](screenshot/axe.png)
 - Abbiamo rielaborato il sistema testando i doppi materiali;
-- Abbiamo implementato la luce all'interno della scena attraverso dei controlli per il suo movimento e accensione/spegnimento;
+- Abbiamo implementato la luce all'interno della scena attraverso dei controlli per il suo movimento e accensione/spegnimento;  
 ![pulsantiera](screenshot/pulsantieraLuci.png)
 ![luceOn](screenshot/lucePalla_on.png)
 ![luceOFF](screenshot/lucePalla_off.png)
