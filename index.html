@@ -384,7 +384,7 @@
         
 
 
-        <script type="text/x-glsl" id="vertex_legno">
+        <script type="text/x-glsl" id="vertex_texture">
 		varying vec3 vNormal;
 		varying vec3 vPosition;
 		varying vec2 uVv;
@@ -398,7 +398,7 @@
 		}
 		</script>
 
-		<script type="text/x-glsl" id="fragment_legno">
+		<script type="text/x-glsl" id="fragment_texture">
 			varying vec3 vNormal;
 			varying vec3 vPosition;
 			varying vec2 uVv;
@@ -573,6 +573,10 @@
                 normalScale: 0.0,
             }
 
+            var materialExtensions = {
+                shaderTextureLOD: true // set to use shader texture LOD
+            };
+
             var normalMapI = loadTexture( "modello/textures/Cylinder001 [Normal].png" );
             var normalMapL = loadTexture( "modello/textures/Box002 [Normal].png" );
             var specularMapLegno = loadTexture("modello/textures/Wood_Specular.png");
@@ -746,48 +750,33 @@
 
 
              var uniformsLegno = {
-                        specularMap: { type: "t", value: specularMapLegno},
-                        diffuseMap: { type: "t", value: diffuseMapLegno},
-                        roughnessMap:   { type: "t", value: roughnessMapLegno},
-                        pointLightPosition: { type: "v3", value: new THREE.Vector3() },
-                        clight: { type: "v3", value: new THREE.Vector3() },
-                        textureRepeat: { type: "v2", value: new THREE.Vector2(1,1) },
-                        normalMap:  { type: "t", value: normalMapI},
-                        normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
-                        envMap: { type: "t", value: textureCube1},
-                        irradianceMap:	{ type: "t", value: irradianceMap1},
-                    };
-
-
-            var uniformsCarbonioTexture = {
-                        specularMap: { type: "t", value: specularMapCarbon},
-                        diffuseMap: { type: "t", value: diffuseMapCarbon},
-                        roughnessMap:   { type: "t", value: roughnessMapCarbon},
-                        pointLightPosition: { type: "v3", value: new THREE.Vector3() },
-                        clight: { type: "v3", value: new THREE.Vector3() },
-                        textureRepeat: { type: "v2", value: new THREE.Vector2(1,1) },
-                        normalMap:  { type: "t", value: normalMapI},
-                        normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
-                        envMap: { type: "t", value: textureCube1},
-                        irradianceMap:	{ type: "t", value: irradianceMap1},
-                    };
-
-
-             var uniformsCarbonio = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
-                    cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
-                    roughness: {type: "f", value: 0.5},
-                    normalMap:  { type: "t", value: normalMapI},
-                    normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
+                    specularMap: { type: "t", value: specularMapLegno},
+                    diffuseMap: { type: "t", value: diffuseMapLegno},
+                    roughnessMap:   { type: "t", value: roughnessMapLegno},
                     pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                     clight: { type: "v3", value: new THREE.Vector3() },
+                    textureRepeat: { type: "v2", value: new THREE.Vector2(1,1) },
+                    normalMap:  { type: "t", value: normalMapI},
+                    normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
                     envMap: { type: "t", value: textureCube1},
                     irradianceMap:	{ type: "t", value: irradianceMap1},
                     };
 
-            materialExtensions = {
-                shaderTextureLOD: true // set to use shader texture LOD
-            };
+
+            var uniformsCarbonio = {
+                    specularMap: { type: "t", value: specularMapCarbon},
+                    diffuseMap: { type: "t", value: diffuseMapCarbon},
+                    roughnessMap:   { type: "t", value: roughnessMapCarbon},
+                    pointLightPosition: { type: "v3", value: new THREE.Vector3() },
+                    clight: { type: "v3", value: new THREE.Vector3() },
+                    textureRepeat: { type: "v2", value: new THREE.Vector2(1,1) },
+                    normalMap:  { type: "t", value: normalMapI},
+                    normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
+                    envMap: { type: "t", value: textureCube1},
+                    irradianceMap:	{ type: "t", value: irradianceMap1},
+                    };
+
+           
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             var uniformsL = uniformsArgento;
@@ -804,11 +793,11 @@
             vs_back = document.getElementById("vertex_background").textContent;
             fs_back = document.getElementById("fragment_background").textContent;
 
-            vs_legno = document.getElementById("vertex_irr").textContent;
-            fs_legno = document.getElementById("fragment_irr").textContent;
+            vs_texture = document.getElementById("vertex_irr").textContent;
+            fs_texture = document.getElementById("fragment_irr").textContent;
 
-            vs_back_legno = document.getElementById("vertex_legno").textContent;
-            fs_back_legno = document.getElementById("fragment_legno").textContent;
+            vs_back_texture = document.getElementById("vertex_texture").textContent;
+            fs_back_texture = document.getElementById("fragment_texture").textContent;
 
             var lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
             lamaMaterial.vertexTangents = true;
@@ -835,7 +824,6 @@
             var lightColor_OFF_mat = new THREE.MeshBasicMaterial ({color: 0x545454, wireframe:true});
             var lightMesh = new THREE.Mesh( new THREE.SphereGeometry( 1, 16, 16), lightColor_ON_mat );
             lightMesh.position.set( 7.0, 7.0, 7.0 );
-            lightMesh.visible = false;
             uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
             uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
 
@@ -866,7 +854,6 @@
 
                 caricaNuovoModello();
 
-                //controls.addEventListener( 'change', render );
                 controls.minDistance = 6;
                 controls.maxDistance = 20;
                 controls.enablePan = false;
@@ -899,7 +886,6 @@
                         angololuce=angololuce+variazioneAngoloLuce;
                         lightMesh.position.set(40*Math.cos(angololuce*Math.PI/180), 7, -40*Math.sin(angololuce*Math.PI/180));
                         movimento_luce_lastUpdate=Date.now();
-
                         uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
                         uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
                     }
@@ -928,7 +914,9 @@
             }
 
             function render() {
-                updateUniforms();
+                if (defaultamb == true){
+                    updateUniforms();
+                }
                 renderer.render( scene, camera );
             }
 
@@ -940,6 +928,7 @@
                 uniformsI.normalScale.value = new THREE.Vector2( textureParameters.normalScale, textureParameters.normalScale );
 
             }
+
 
             function changeMaterial(materiale) {
             	switch(materiale){
@@ -1010,11 +999,11 @@
             			caricaNuovoModello();
             			break;	
             		case 'carbonio':
-                    uniformsCarbonioTexture.envMap.value = environment;
-                    uniformsCarbonioTexture.irradianceMap.value = irradiance;
-            			uniformsI = uniformsCarbonioTexture;
-            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs_legno, fragmentShader: fs_legno });
-            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back_legno, fragmentShader: fs_back_legno});
+                        uniformsCarbonio.envMap.value = environment;
+                        uniformsCarbonio.irradianceMap.value = irradiance;
+            			uniformsI = uniformsCarbonio;
+            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs_texture, fragmentShader: fs_texture });
+            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back_texture, fragmentShader: fs_back_texture});
                         prezzoBastone=42;
                         document.getElementById("mat_manico").textContent="carbonio";
                         document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
@@ -1025,8 +1014,8 @@
                       	uniformsLegno.envMap.value = environment;
                       	uniformsLegno.irradianceMap.value = irradiance;
             			uniformsI = uniformsLegno;
-            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs_legno, fragmentShader: fs_legno });
-            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back_legno, fragmentShader: fs_back_legno});
+            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs_texture, fragmentShader: fs_texture });
+            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back_texture, fragmentShader: fs_back_texture});
                         prezzoBastone=42;
                         document.getElementById("mat_manico").textContent="legno";
                         document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
@@ -1053,7 +1042,6 @@
                         uniformsI.irradianceMap.value = irradianceMap;
                         rimuoviModello();
                         caricaNuovoModello();
-                        lightMesh.visible = false;
                         break;
                     case 'tempio':
                     	defaultamb = false;
@@ -1065,7 +1053,6 @@
                         uniformsI.irradianceMap.value = irradianceMap1;
                         rimuoviModello();
                         caricaNuovoModello();
-                        lightMesh.visible = false;
                         break;
                     case 'park':
                     	defaultamb = false;
@@ -1077,7 +1064,6 @@
                         uniformsI.irradianceMap.value = irradianceMap2;
                         rimuoviModello();
                         caricaNuovoModello();
-                        lightMesh.visible = false;
                         break;
                     case 'distesa':
                     	defaultamb = false;
@@ -1089,7 +1075,6 @@
                         uniformsI.irradianceMap.value = irradianceMap3;
                         rimuoviModello();
                         caricaNuovoModello();
-                        lightMesh.visible = false;
                         break;
                     case 'neve':
                         defaultamb = false;
@@ -1101,14 +1086,12 @@
                         uniformsI.irradianceMap.value = irradianceMap4;
                         rimuoviModello();
                         caricaNuovoModello();
-                        lightMesh.visible = false;
                         break;
                     case 'noBack':
                     	defaultamb = true;
             			rimuoviModello();
                         scene.background =  0x1a3300;
                         caricaNuovoModello();
-                        lightMesh.visible = true;
                         break;      
                 }   
             }
@@ -1139,13 +1122,13 @@
                     geometry.applyMatrix( new THREE.Matrix4().makeTranslation(115, 0, 0) );
                     if (defaultamb == true){
                     	mesh = new THREE.Mesh( geometry, materialBackI );
+                        scene.add(lightMesh);
                     } else {
                     	mesh = new THREE.Mesh( geometry, impugnaturaMaterial );
                     }
                     mesh.scale.multiplyScalar( 0.03 );
                     THREE.BufferGeometryUtils.computeTangents(geometry);
                     scene.add( mesh );
-                    scene.add(lightMesh);
                 } );
 			}
 			
