@@ -26,54 +26,74 @@
 
         <p align="center"><img src="images/bar.png" width="100%"></p>
 
-
+<!--
       <div>
                 <div class="row">
                     <div class="col-1">
                         <img id="uniud" src="images/Uniud.png" width="100%" alt="Logo UNIUD">
                     </div>
-                    <div class="col-10">
-                        <p class="header">...dall'antica tradizione orientale</p>
-                        <p class="title">L'ASCIA DI GENGIS KHAN</p>
-                    </div>
+
                     <div class="col-1">
                         <img id="uniud" src="images/acme_logo.png" width="100%" alt="Logo UNIUD">
                     </div>
                 </div>
       </div>
-
+-->
         <div class="row justify-content-md-center">
             <div class="col-2">
-                <p class="menuchoice">Modifica il MATERIALE della lama</p>
-                    <a href="#" onClick="changeMaterial('argento')"><img class="material" src="images/metal.jpg" alt="argento"></a>
-                    <a href="#" onClick="changeMaterial('oro')"><img class="material" src="images/oro.jpg" alt="oro"></a>
-                    <a href="#" onClick="changeMaterial('vetro')"><img class="material" src="images/glass.jpg" alt="glass"></a>
-                    <a href="#" onClick="changeMaterial('smeraldo')"><img class="material" src="images/emerald.jpg" alt="emerald"></a>
-                <p class="menuchoice">Modifica MATERIALE dell'impugnatura</p>
-                    <a href="#" onClick="changeMaterial('titanio')"><img class="material" src="images/titanio.jpg" alt="titanio"></a>
-                    <a href="#" onClick="changeMaterial('rame')"><img class="material" src="images/rame.jpg" alt="rame"></a>
-                    <a href="#" onClick="changeMaterial('legno')"><img class="material" src="images/legno.jpg" alt="legno"></a>                    
-                    <a href="#" onClick="changeMaterial('carbonio')"><img class="material" src="images/carbon.jpg" alt="carbonio"></a>
-                    
+                <p class="menuchoice">Scegli il materiale per... <br/ > LA LAMA</p>
+                    <table class="desc-mat">
+                        <tr>
+                            <td><a href="#" onClick="changeMaterial('argento')"><img class="material" src="images/metal.jpg" alt="argento"></a><br />argento</td>
+                            <td><a href="#" onClick="changeMaterial('oro')"><img class="material" src="images/oro.jpg" alt="oro"></a><br />oro</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onClick="changeMaterial('vetro')"><img class="material" src="images/glass.jpg" alt="glass"></a><br />vetro</td>
+                            <td><a href="#" onClick="changeMaterial('smeraldo')"><img class="material" src="images/emerald.jpg" alt="emerald"></a><br />smeraldo</td>
+                        </tr>
+                    </table>
+                <p class="menuchoice"><br>L' IMPUGNATURA</p>
+                    <table class="desc-mat">
+                        <tr>
+                            <td><a href="#" onClick="changeMaterial('titanio')"><img class="material" src="images/titanio.jpg" alt="titanio"></a><br />titanio</td>
+                            <td><a href="#" onClick="changeMaterial('rame')"><img class="material" src="images/rame.jpg" alt="rame"></a><br />rame</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onClick="changeMaterial('legno')"><img class="material" src="images/legno.jpg" alt="legno"></a><br />legno</td>
+                            <td><a href="#" onClick="changeMaterial('carbonio')"><img class="material" src="images/carbon.jpg" alt="carbonio"></a><br />carbonio</td>
+                        </tr>
+                    </table>
             </div>
 
 
             <div class="col-8 h-100">
+                <div class="col-12">
+                    <p class="header">...dall'antica tradizione orientale</p>
+                    <p class="title">L'ASCIA DI GENGIS KHAN</p>
+                </div>
                 <div style="height: 500px;" id="canvas"></div>
                 <p class="description" align="center">Hai selezionato: lama in <span id="mat_lama" class="description2">argento</span> con manico in <span id="mat_manico" class="description2">oro</span>.</p>
             </div>
 
 
             <div class="col-2">
-                <p class="menuchoice">Modifica il BACKGROUND</p>
-                    <a href="#" onClick="changeAmbiente('jungle2')"><img class="material" src="images/jungle2.jpg" alt="jungle2"></a>
-                    <a href="#" onClick="changeAmbiente('park')"><img class="material" src="images/park.jpg" alt="park"></a>
-                    <a href="#" onClick="changeAmbiente('tempio')"><img class="material" src="images/tempio.jpg" alt="tempio"></a>
-                    <a href="#" onClick="changeAmbiente('distesa')"><img class="material" src="images/distesa.jpg" alt="distesa"></a>
-                    <a href="#" onClick="changeAmbiente('neve')"><img class="material" src="images/neve.jpg" alt="neve"></a>
-                    <a href="#" onClick="changeAmbiente('noBack')"><img class="material" src="images/noBack.jpg" alt="noBack"></a>
+                <p class="menuchoice">PROVALA DOVE VUOI!</p>
+                    <table class="desc-mat">
+                        <tr>
+                            <td><a href="#" onClick="changeAmbiente('jungle2')"><img class="material" src="images/jungle2.jpg" alt="jungle2"></a></a><br />selvaggia giungla</td>
+                            <td><a href="#" onClick="changeAmbiente('park')"><img class="material" src="images/park.jpg" alt="park"></a></a><br />centro cittadino</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onClick="changeAmbiente('tempio')"><img class="material" src="images/tempio.jpg" alt="tempio"></a></a><br />antico tempio</td>
+                            <td><a href="#" onClick="changeAmbiente('distesa')"><img class="material" src="images/distesa.jpg" alt="distesa"></a></a><br />radura desolata</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" onClick="changeAmbiente('neve')"><img class="material" src="images/neve.jpg" alt="neve"></a></a><br />foresta innevata</td>
+                            <td><a href="#" onClick="changeAmbiente('noBack')"><img class="material" src="images/noBack.jpg" alt="noBack"></a></a><br />senza background</td>
+                        </tr>
+                    </table>
                 <p>&nbsp;</p>
-                <p class="menuchoice">Controllo LUCE <br /><span class="fondo">(solo nella vista senza background)</span></p>
+                <p class="menuchoice">Controlla la LUCE<br /><span class="fondo">(solo nella vista senza background)</span></p>
                     <a href="#" onClick="changeLight('noLight')"><img class="icona" src="images/icona_luce_off.png" alt="noLight"></a>
                     <a href="#" onClick="changeLight('yesLight')"><img class="icona" src="images/icona_luce.png" alt="yesLight"></a>
                     <a href="#" onClick="changeLight('turnLight')"><img class="icona" src="images/icona_luce_gira.png" alt="turnLight"></a>

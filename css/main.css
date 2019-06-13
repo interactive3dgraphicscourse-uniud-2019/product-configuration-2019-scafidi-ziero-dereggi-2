@@ -53,6 +53,12 @@ body {
     margin: 0px;
 }
 
+.desc-mat {
+    font-size: 10px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
 
 
 a:link, a:visited {
