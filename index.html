@@ -579,6 +579,9 @@
             var diffuseMapLegno = loadTexture("modello/textures/Wood_Diffuse.png");
             var roughnessMapLegno = loadTexture("modello/textures/Wood_Roughness.png");
 
+            var specularMapCarbon = loadTexture("modello/textures/Wood_Specular.png");
+            var diffuseMapCarbon = loadTexture("modello/textures/carbon_diffuse.png");
+            var roughnessMapCarbon = loadTexture("modello/textures/carbon_roughness.png");
 //------------------------------------------ background
 			var loader = new THREE.CubeTextureLoader();
             loader.setPath( 'cubemap/jungle2/' );
@@ -757,9 +760,9 @@
 
 
             var uniformsCarbonioTexture = {
-                        specularMap: { type: "t", value: specularMapLegno},
-                        diffuseMap: { type: "t", value: diffuseMapLegno},
-                        roughnessMap:   { type: "t", value: roughnessMapLegno},
+                        specularMap: { type: "t", value: specularMapCarbon},
+                        diffuseMap: { type: "t", value: diffuseMapCarbon},
+                        roughnessMap:   { type: "t", value: roughnessMapCarbon},
                         pointLightPosition: { type: "v3", value: new THREE.Vector3() },
                         clight: { type: "v3", value: new THREE.Vector3() },
                         textureRepeat: { type: "v2", value: new THREE.Vector2(1,1) },
@@ -1007,16 +1010,17 @@
             			caricaNuovoModello();
             			break;	
             		case 'carbonio':
-                    	uniformsCarbonio.envMap.value = environment;
-            			uniformsI = uniformsCarbonio;
-            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
-            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
-						prezzoBastone=42;
-            			document.getElementById("mat_manico").textContent="carbonio";
-            			document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
-            			rimuoviModello();
-            			caricaNuovoModello();
-            			break;	
+                    uniformsCarbonioTexture.envMap.value = environment;
+                    uniformsCarbonioTexture.irradianceMap.value = irradiance;
+            			uniformsI = uniformsCarbonioTexture;
+            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs_legno, fragmentShader: fs_legno });
+            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back_legno, fragmentShader: fs_back_legno});
+                        prezzoBastone=42;
+                        document.getElementById("mat_manico").textContent="carbonio";
+                        document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
+                        rimuoviModello();
+                        caricaNuovoModello();
+            			break;
             		case 'legno':
                       	uniformsLegno.envMap.value = environment;
                       	uniformsLegno.irradianceMap.value = irradiance;
