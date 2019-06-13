@@ -240,7 +240,7 @@
         </script>
 
 
-        <script type="text/x-glsl" id="fragment_vetro1">
+        <script type="text/x-glsl" id="fragment_vetro">
             varying vec3 vNormal;
             varying vec3 vTangent;
             varying vec3 vBitangent;
@@ -290,7 +290,7 @@
         </script>
 
 
-        <script type="text/x-glsl" id="fragment_vetro">
+        <script type="text/x-glsl" id="fragment_vetro1">
             precision highp float;
             precision highp int;
             varying vec3 vNormal;
@@ -342,7 +342,7 @@
                 vec3 bitangent = normalize( vBitangent );
                 mat3 vTBN = mat3( tangent, bitangent, normal );
                 vec3 mapN = texture2D( normalMap, vUv ).xyz * 2.0 - 1.0;
-                mapN.xy = normalScale * mapN.xy;
+                //mapN.xy = normalScale * mapN.xy;
                 vec3 n = normalize( vTBN * mapN );
                 vec3 v = normalize( -vPosition);
                 vec3 vReflect = reflect(vPosition,n);
@@ -498,7 +498,7 @@
 				vec3 bitangent = normalize( vBitangent );
 				mat3 vTBN = mat3( tangent, bitangent, normal );
 				vec3 mapN = texture2D( normalMap, vUv ).xyz * 2.0 - 1.0;
-				mapN.xy = normalScale * mapN.xy;
+				//mapN.xy = normalScale * mapN.xy;
 				vec3 n = normalize( vTBN * mapN );
 				vec3 v = normalize( -vPosition);
 				vec3 worldN = inverseTransformDirection( n, viewMatrix );
@@ -522,7 +522,6 @@
 
         
 
-
         <script>
             var refreshTime=10; //millisecondi
             var movimento_luce_lastUpdate=0;
@@ -530,7 +529,6 @@
             var variazioneAngoloLuce = 0;
             var prezzoBastone = 42;
             var prezzoLama = 100;
-
 
 
             container = document.getElementById('canvas');
@@ -570,7 +568,7 @@
                 'pz.jpg', 'nz.jpg'
             ] );
 
-            var loader = new THREE.CubeTextureLoader();
+
             loader.setPath( 'cubemap/jungle2Irradiance/' );
 			var irradianceMap = loader.load( [
 					'px.jpg', 'nx.jpg',
@@ -579,7 +577,7 @@
 			] );
 
 
-            var loader = new THREE.CubeTextureLoader();
+
             loader.setPath( 'cubemap/tempio/' );
             var textureCube1 = loader.load( [
                 'px.jpg', 'nx.jpg',
@@ -587,7 +585,7 @@
                 'pz.jpg', 'nz.jpg'
             ] );
 
-            var loader = new THREE.CubeTextureLoader();
+
             loader.setPath( 'cubemap/tempioIrradiance/' );
 			var irradianceMap1 = loader.load( [
 					'px.jpg', 'nx.jpg',
@@ -596,7 +594,7 @@
 			] );
 
 
-            var loader = new THREE.CubeTextureLoader();
+
             loader.setPath( 'cubemap/Yokohama/' );
             var textureCube2 = loader.load( [
                 'px.jpg', 'nx.jpg',
@@ -604,7 +602,7 @@
                 'pz.jpg', 'nz.jpg'
             ] );
 
-            var loader = new THREE.CubeTextureLoader();
+
             loader.setPath( 'cubemap/YokohamaIrradiance/' );
 			var irradianceMap2 = loader.load( [
 					'px.jpg', 'nx.jpg',
@@ -613,7 +611,7 @@
 			] );
 
 
-            var loader = new THREE.CubeTextureLoader();
+
             loader.setPath( 'cubemap/distesa/' );
             var textureCube3 = loader.load( [
                 'px.jpg', 'nx.jpg',
@@ -621,7 +619,7 @@
                 'pz.jpg', 'nz.jpg'
             ] );
 
-            var loader = new THREE.CubeTextureLoader();
+
             loader.setPath( 'cubemap/distesaIrradiance/' );
 			var irradianceMap3 = loader.load( [
 					'px.jpg', 'nx.jpg',
@@ -631,7 +629,7 @@
 
 
          
-            var loader = new THREE.CubeTextureLoader();
+
             loader.setPath( 'cubemap/neve/' );
             var textureCube4 = loader.load( [
                 'px.jpg', 'nx.jpg',
@@ -639,7 +637,7 @@
                 'pz.jpg', 'nz.jpg'
             ] );
 
-            var loader = new THREE.CubeTextureLoader();
+
             loader.setPath( 'cubemap/neveIrradiance/' );
 			var irradianceMap4 = loader.load( [
 					'px.jpg', 'nx.jpg',
@@ -711,7 +709,7 @@
                     irradianceMap:	{ type: "t", value: irradianceMap1},
                     };
 
-                var uniformsRame = {
+             var uniformsRame = {
                     cspec:  { type: "v3", value: new THREE.Vector3(0.955,0.638,0.538) },
                     cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
@@ -736,8 +734,9 @@
                         envMap: { type: "t", value: textureCube1},
                         irradianceMap:	{ type: "t", value: irradianceMap1},
                     };
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    var uniformsCarbonio = {
+
+
+            var uniformsCarbonioTexture = {
                         specularMap: { type: "t", value: specularMapLegno},
                         diffuseMap: { type: "t", value: diffuseMapLegno},
                         roughnessMap:   { type: "t", value: roughnessMapLegno},
@@ -949,7 +948,7 @@
             			lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs });
             			materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
             			prezzoLama=50;
-            			document.getElementById("mat_lama").textContent="emerald";
+            			document.getElementById("mat_lama").textContent="smeraldo";
             			document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
@@ -960,7 +959,7 @@
                         lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs_vetro, extensions: materialExtensions });
                         materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
                         prezzoLama=50;
-                        document.getElementById("mat_lama").textContent="emerald";
+                        document.getElementById("mat_lama").textContent="vetro";
                         document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
                         rimuoviModello();
                         caricaNuovoModello();
@@ -971,7 +970,7 @@
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
                         prezzoBastone=62;
-                        document.getElementById("mat_manico").textContent="oro";
+                        document.getElementById("mat_manico").textContent="titanio";
                         document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
@@ -993,7 +992,7 @@
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs, fragmentShader: fs });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back, fragmentShader: fs_back});
 						prezzoBastone=42;
-            			document.getElementById("mat_manico").textContent="argento";
+            			document.getElementById("mat_manico").textContent="carbonio";
             			document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
             			rimuoviModello();
             			caricaNuovoModello();
@@ -1004,26 +1003,12 @@
             			uniformsI = uniformsLegno;
             			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs_legno, fragmentShader: fs_legno });
             			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back_legno, fragmentShader: fs_back_legno});
-            			rimuoviModello();
-            			caricaNuovoModello();
-            			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-            			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-                         document.getElementById("mat_manico").textContent="legno";
+                        prezzoBastone=42;
+                        document.getElementById("mat_manico").textContent="legno";
+                        document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
+                        rimuoviModello();
+                        caricaNuovoModello();
             			break;
-
-                        case 'carbonio':
-                      	uniformsLegno.envMap.value = environment;
-                      	uniformsLegno.irradianceMap.value = irradiance;
-            			uniformsI = uniformsLegno;
-            			impugnaturaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsI, vertexShader: vs_legno, fragmentShader: fs_legno });
-            			materialBackI = new THREE.ShaderMaterial({uniforms:uniformsI, vertexShader:vs_back_legno, fragmentShader: fs_back_legno});
-            			rimuoviModello();
-            			caricaNuovoModello();
-            			 uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-            			 uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-                         document.getElementById("mat_manico").textContent="carbonio";
-            			break;
-
             		default:
             			break;
             	}
