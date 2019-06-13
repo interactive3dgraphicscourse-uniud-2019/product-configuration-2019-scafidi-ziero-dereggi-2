@@ -132,7 +132,6 @@
             uniform vec3 pointLightPosition; // in world space
             uniform vec3 clight;
             uniform vec3 cspec;
-            uniform vec3 cdiff;
             uniform float roughness;
             uniform sampler2D normalMap;
             uniform vec2 normalScale;
@@ -177,7 +176,7 @@
                 float vDoth = max(dot( v, h ),0.000001);
                 float nDotv = max(dot( n, v ),0.000001);
                 vec3 fresnel = FSchlick(lDoth);
-                vec3 BRDF = (vec3(1.0)-fresnel)*cdiff/PI + fresnel*GSmith(nDotv,nDotl)*DGGX(nDoth,roughness*roughness)/
+                vec3 BRDF = fresnel*GSmith(nDotv,nDotl)*DGGX(nDoth,roughness*roughness)/
                     (4.0*nDotl*nDotv);
                 vec3 outRadiance = PI* clight * nDotl * BRDF;
                 // gamma encode the final value
@@ -579,6 +578,7 @@
 
             var normalMapI = loadTexture( "modello/textures/Cylinder001 [Normal].png" );
             var normalMapL = loadTexture( "modello/textures/Box002 [Normal].png" );
+            
             var specularMapLegno = loadTexture("modello/textures/Wood_Specular.png");
             var diffuseMapLegno = loadTexture("modello/textures/Wood_Diffuse.png");
             var roughnessMapLegno = loadTexture("modello/textures/Wood_Roughness.png");
@@ -678,7 +678,6 @@
 
             var uniformsOro = {
                     cspec:  { type: "v3", value: new THREE.Vector3(1.022,0.782,0.344) },
-                    cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapL},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
@@ -690,7 +689,6 @@
 
              var uniformsSmeraldo = {
                     cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.496791,0.449419) },
-                    cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapL},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
@@ -702,7 +700,6 @@
 
              var uniformsArgento = {
                     cspec:  { type: "v3", value: new THREE.Vector3(0.972,0.960,0.915) },
-                    cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapL},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
@@ -713,8 +710,8 @@
 
 
             var uniformsVetro = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(0.5,0.5,0.5) },
-                    cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.04,0.04,0.04) },
+                    cdiff:  { type: "v3", value: new THREE.Vector3(0.5,0.5,0.5) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapL},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
@@ -726,7 +723,6 @@
 
              var uniformsTitanio = {
                     cspec:  { type: "v3", value: new THREE.Vector3(0.541931,0.496791,0.449419) },
-                    cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapI},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
@@ -738,7 +734,6 @@
 
              var uniformsRame = {
                     cspec:  { type: "v3", value: new THREE.Vector3(0.955,0.638,0.538) },
-                    cdiff:  { type: "v3", value: new THREE.Vector3(0.0,0.0,0.0) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapI},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
