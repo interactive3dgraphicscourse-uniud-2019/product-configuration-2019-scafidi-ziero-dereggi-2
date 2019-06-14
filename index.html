@@ -48,7 +48,7 @@
                             <td><a href="#" onClick="changeMaterial('oro')"><img class="material" src="images/oro.jpg" alt="oro"></a><br />oro</td>
                         </tr>
                         <tr>
-                            <td><a href="#" onClick="changeMaterial('vetro')"><img class="material" src="images/glass.jpg" alt="glass"></a><br />vetro</td>
+                            <td><a href="#" onClick="changeMaterial('comingSoon')"><img class="material" src="images/comingSoon.jpg" alt="comingSoon"></a><br />presto disponibile</td>
                             <td><a href="#" onClick="changeMaterial('smeraldo')"><img class="material" src="images/emerald.jpg" alt="emerald"></a><br />smeraldo</td>
                         </tr>
                     </table>
@@ -72,7 +72,7 @@
                     <p class="title">L'ASCIA DI GENGIS KHAN</p>
                 </div>
                 <div style="height: 500px;" id="canvas"></div>
-                <p class="description" align="center">Hai selezionato: lama in <span id="mat_lama" class="description2">argento</span> con manico in <span id="mat_manico" class="description2">oro</span>.</p>
+                <p class="description" align="center">Hai selezionato: lama in <span id="mat_lama" class="description2">argento</span> con manico in <span id="mat_manico" class="description2">rame</span>.</p>
             </div>
 
 
@@ -284,7 +284,7 @@
 
         
 
-        <script type="text/x-glsl" id="fragment_vetro">
+        <script type="text/x-glsl" id="fragment_comingSoon">
             varying vec3 vNormal;
             varying vec3 vTangent;
             varying vec3 vBitangent;
@@ -499,6 +499,7 @@
             var variazioneAngoloLuce = 0;
             var prezzoBastone = 42;
             var prezzoLama = 100;
+            var comingSoon_selected=false;
 
 
             container = document.getElementById('canvas');
@@ -660,8 +661,8 @@
                     };
 
 
-            var uniformsVetro = {
-                    cspec:  { type: "v3", value: new THREE.Vector3(0.1,0.1,0.1) },
+            var uniformscomingSoon = {
+                    cspec:  { type: "v3", value: new THREE.Vector3(0.8,0.8,0.8) },
                     roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapL},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
@@ -733,7 +734,7 @@
             vs = document.getElementById("vertex").textContent;
             fs = document.getElementById("fragment").textContent;
 
-            fs_vetro = document.getElementById("fragment_vetro").textContent;
+            fs_comingSoon = document.getElementById("fragment_comingSoon").textContent;
 
             vs_back = document.getElementById("vertex_background").textContent;
             fs_back = document.getElementById("fragment_background").textContent;
@@ -907,16 +908,18 @@
             			rimuoviModello();
             			caricaModello();
             			break;
-                    case 'vetro':
-                        uniformsVetro.envMap.value = environment;
-                        uniformsL = uniformsVetro;
-                        lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs_vetro, extensions: materialExtensions });
+                    case 'comingSoon':
+                        uniformscomingSoon.envMap.value = environment;
+                        uniformsL = uniformscomingSoon;
+                        lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs_comingSoon, extensions: materialExtensions });
                         materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
-                        prezzoLama=50;
-                        document.getElementById("mat_lama").textContent="vetro";
+                        prezzoLama=0;
+                        document.getElementById("mat_lama").textContent="(materiale presto disponibile)";
                         document.getElementById("prezzo").textContent=(prezzoLama+prezzoBastone).toString();
                         rimuoviModello();
                         caricaModello();
+                        comingSoon_selected=true;
+                        checkComingSoon();
                         break;
             		case 'titanio':
                     	uniformsTitanio.envMap.value = environment;
@@ -1033,12 +1036,20 @@
                     	defaultamb = true;
             			rimuoviModello();
                         scene.background =  0x1a3300;
+                        checkComingSoon();
                         caricaModello();
                         break;      
                 }   
             }
 
 
+            function checkComingSoon() {
+                if(comingSoon_selected && defaultamb)  {
+                    alert("Il nuovo materiale non è ancora disponibile per la vendita e la visualizzazione in questa modalità. Verrà selezionato l'oro.");
+                    changeMaterial('oro');
+                    comingSoon_selected=false;
+                }
+            }
 
 
             function caricaModello(){
