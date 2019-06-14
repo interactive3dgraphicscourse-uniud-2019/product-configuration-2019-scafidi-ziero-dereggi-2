@@ -1,6 +1,6 @@
 # GENGIS'S AXE
 
-![intestazione](screenshot/totale.png)
+![intestazione](screenshot/intestazione.png)
 
 Progetto per il secondo parziale del corso di Interactive 3D Graphics (2018/2019) con consegna entro 17/06/2019.
 
@@ -35,6 +35,7 @@ La geometria del modello è caratterizzata da:
 Intero sito web:
 ![intero sito](screenshot/totale.png)
 Esempio di cambio dei materiali in una diversa ambientazione:
+![Esempio di cambio materiale](screenshot/screen0.png)
 ![Esempio di cambio](screenshot/screen1.png)
 Esempio di movimento della luce 
 ![luce](screenshot/screen2.png)
