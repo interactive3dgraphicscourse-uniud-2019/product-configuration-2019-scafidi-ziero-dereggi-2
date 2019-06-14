@@ -30,8 +30,13 @@ La geometria del modello è caratterizzata da:
 ### Shaders
 
 ## Screenshots del progetto
-
-![splashscreen](Screenshot/splash.png)
+Intero sito web:
+![intero sito](screenshot/totale.png)
+Esempio di cambio dei materiali in una diversa ambientazione:
+![Esempio di cambio](screenshot/screen1.png)
+Esempio di movimento della luce 
+![luce](screenshot/screen2.png)
+![no luce](screenshot/screen3.png)
 
 ## Controllo Luci
 Nella visualizzazione senza l'ambiente circostante, quindi senza cubemap, abbiamo implementato la possibilità di vedere come si comportano i materiali degli oggetti in presenza di una luce puntiforme, al netto di tutte le luci ambientali.  
@@ -44,27 +49,20 @@ La luce, per semplicità, è stata simulata in maniera visuale da un oggetto di 
 Ovviamente se "spegniamo la luce", azzerando la sua intensità, l'oggetto risulterà completamente al buio e la sfera sarà colorata di grigio.  
 
 
-4. Build the application that renders the chosen 3D model, with the designed lighting setup and materials, and an user interface for selecting the material between the alternatives. **Important: you can implement this step in two different ways**:
-
-    a. using three.js built-in lights and materials (MeshStandardMaterial or MeshPhysicalMaterial), without writing any shader. In this case, your final report **must include** the equations of the BRDF and rendering equations that you are using. In other words, you have to dig into three.js shaders to find which equations are used, and write them (in mathematical form, not using code);
-
-    b. using shaders written by you, e.g. by extending the shaders we saw in the classroom. In this case, your report needs just to mention the kind of BRDF / lights you have implemented (no need to report the equations, unless you are using different BRDF or adding some new equation).
-
-
 ## Processo produttivo e planning steps
 
 Per lo sviluppo del progetto abbiamo seguito un metodo Divide et Impera in cui le fasi principali sono state:
 - Progettazione e design dell'idea;
-- Creazione placeholder e definizione delle idee utilizzando three.js;
-- Sostituizione man mano degli elementi fittizi con le versioni finali;
-- Organizzazione generale degli elementi;
-- Ottimizzazione delle leggi e calcolo efficienza del codice;
-- Creazione della heatmap e fase di testing;
+- Decisione del modello di riferimento;
+- Creazione di placeholder nel sito web per la struttura del progetto;
+- Sostituizione man mano degli elementi fittizi con le versioni finali (scelta materiali, backgrounds, ecc.);
+- Inserimento shaders, luci ed elementi principali della scena;
+- Organizzazione generale degli elementi e perfezionamento dei dettagli;
+- Inserimento dettagli del sito web per similarità ad un sito di e-commerce;
 - Pulizia codice e organizzazione degli elementi;
 - Creazione relazione del progetto.
 
 ## Credits
 Per il progetto sono state utilizzate risorse tutte sotto licenza Creative Commons o utilizzabili senza fini commerciali, in particolare:
 - il modello è stato preso dal sito web https://sketchfab.com/3d-models/decorative-battle-axe-71c096cafedd4aecb52f1f8eaccd5146
-- i modelli delle cubemap dai siti 
-- le texture dal sito web https://freestocktextures.com
+- i modelli delle cubemap dal sito web http://www.humus.name/index.php?page=Textures
