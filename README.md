@@ -1,5 +1,7 @@
 # GENGIS'S AXE
 
+![intestazione](screenshot/titolo.png)
+
 Progetto per il secondo parziale del corso di Interactive 3D Graphics (2018/2019) con consegna entro 17/06/2019.
 
 Team:
