@@ -239,7 +239,6 @@
                 return ( 2.0 / pow2( ggxRoughness + 0.0001 ) - 2.0 );
             }
 
-            // http://en.wikibooks.org/wiki/GLSL_Programming/Applying_Matrix_Transformations
             vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
                 return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );
             }
@@ -302,11 +301,9 @@
             }
 
         
-
-        // http://en.wikibooks.org/wiki/GLSL_Programming/Applying_Matrix_Transformations
-        vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
-            return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );
-        }
+            vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
+                return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );
+            }
 
             void main() {
                 vec3 normal = normalize( vNormal );
@@ -455,12 +452,9 @@
 
 			vec3 cdiff;
 
-		
-
-		// http://en.wikibooks.org/wiki/GLSL_Programming/Applying_Matrix_Transformations
-		vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
-			return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );
-		}
+		    vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
+			    return normalize( ( vec4( dir, 0.0 ) * matrix ).xyz );
+		    }
 
 			void main() {
 				vec3 normal = normalize( vNormal );
@@ -538,6 +532,7 @@
             var specularMapCarbon = loadTexture("modello/textures/Wood_Specular.png");
             var diffuseMapCarbon = loadTexture("modello/textures/carbon_albedo2.png");
             var roughnessMapCarbon = loadTexture("modello/textures/carbon_roughness.png");
+
 //------------------------------------------ background
 			var loader = new THREE.CubeTextureLoader();
             loader.setPath( 'cubemap/jungle2/' );
@@ -607,7 +602,6 @@
 			] );
 
 
-         
 
             loader.setPath( 'cubemap/neve/' );
             var textureCube4 = loader.load( [
@@ -663,11 +657,8 @@
 
             var uniformscomingSoon = {
                     cspec:  { type: "v3", value: new THREE.Vector3(0.8,0.8,0.8) },
-                    roughness: {type: "f", value: 0.5},
                     normalMap:  { type: "t", value: normalMapL},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
-                    pointLightPosition: { type: "v3", value: new THREE.Vector3() },
-                    clight: { type: "v3", value: new THREE.Vector3() },
                     envMap: { type: "t", value: textureCube1},
                     };
 
@@ -818,7 +809,9 @@
             }
 
             function update() {
-                muoviLuce();
+                if (defaultamb == true && uniformsL != uniformscomingSoon){
+                    muoviLuce();
+                }
                 requestAnimationFrame( update );
                 stats.update();
                 render();
@@ -831,7 +824,7 @@
                         movimento_luce_lastUpdate=Date.now();
                         uniformsL.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
                         uniformsI.pointLightPosition.value = new THREE.Vector3(lightMesh.position.x, lightMesh.position.y, lightMesh.position.z);
-                    }
+                }
             }
 
             function changeLight(mode) {
@@ -857,14 +850,14 @@
             }
 
             function render() {
-                if (defaultamb == true){
+               if (defaultamb == true && uniformsL != uniformscomingSoon){ 
                     updateUniforms();
                 }
                 renderer.render( scene, camera );
             }
 
 
-            function updateUniforms() {
+            function updateUniforms() {                    
                 uniformsL.clight.value = new THREE.Vector3( lightParameters.red * lightParameters.intensity, lightParameters.green * lightParameters.intensity, lightParameters.blue * lightParameters.intensity);
                 uniformsL.normalScale.value = new THREE.Vector2( textureParameters.normalScale, textureParameters.normalScale );
                 uniformsI.clight.value = new THREE.Vector3( lightParameters.red * lightParameters.intensity, lightParameters.green * lightParameters.intensity, lightParameters.blue * lightParameters.intensity);
@@ -911,7 +904,7 @@
                     case 'comingSoon':
                         uniformscomingSoon.envMap.value = environment;
                         uniformsL = uniformscomingSoon;
-                        lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs_comingSoon, extensions: materialExtensions });
+                        lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs_comingSoon });
                         materialBackL = new THREE.ShaderMaterial({uniforms:uniformsL, vertexShader:vs_back, fragmentShader: fs_back});
                         prezzoLama=0;
                         document.getElementById("mat_lama").textContent="(materiale presto disponibile)";
