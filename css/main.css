@@ -22,15 +22,6 @@ body {
 	color: #ffffff;
 }
 
-
-.subtitle {
-    font-family: 'KeepCalm-Medium', cursive;
-    font-size: 30px;
-    color: #000000;
-    text-align: center;
-    margin: 0px;
-}
-
 .description {
     text-align: center;
     font-family: 'KeepCalm-Medium', cursive;
@@ -59,23 +50,6 @@ body {
     color: #FFFFFF;
 }
 
-
-
-a:link, a:visited {
-    text-decoration: none;
-    }
-a:hover, a:active {
-    text-decoration: none;
-}
-
-
-
-.inner-list li {
-    position: absolute;
-    display: inline-block;
-    left: 10px;
-}
-
 table {
     text-align: center;
 }
@@ -97,21 +71,6 @@ table {
     border: 2px #3f3f3f solid;
 }
 
-
-
-#materiale img:hover {
-    margin: 5px 7px;
-    width: 90px;
-    height: 90px;
-    border-radius: 10px;
-    border: 4px #3f3f3f solid;
-}
-
-#sfondo {
-    margin: 5px 7px;
-    width: 90px;
-    height: 90px;
-}
 
 .text {
     padding-top: 0px;
