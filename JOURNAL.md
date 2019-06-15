@@ -24,13 +24,13 @@ Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'o
 ![Prima bozza](screenshot/bozza.png)
 - Abbiamo iniziato a implementare il sito, fino a decidere di riprogettare la pagina utilizzando un bootstrap per riuscire a lavorare in modo più efficiente in merito alla gestione delle larghezze della pagina e quindi renderla più responsive possibile;  
 ![Primo sito](screenshot/inizialeTot.png)
+- Abbiamo lavorato sui materiali e quindi sulla loro modificabilità e struttura;
+- Abbiamo deciso di cambiare modello, quindi abbiamo ricalibrato l'intero progetto per la nuova sistemazione;
+![modello2](screenshot/axe.png)
 - Abbiamo iniziato l'implementazione attraverso l'inserimento degli shaders e l'applicazione delle texture;
 ![Primo sito3](screenshot/material.png)
 - Abbiamo lavorato sulle cubemap e abbiamo studiato l'inserimento delle stesse nella scena, considerando anche l'opzione senza background;
 ![Primo sito3](screenshot/wcube.png)
-- Abbiamo lavorato sui materiali e quindi sulla loro modificabilità e struttura;
-- Abbiamo deciso di cambiare modello, quindi abbiamo ricalibrato l'intero progetto per la nuova sistemazione;
-![modello2](screenshot/axe.png)
 - Abbiamo rielaborato il sistema testando i doppi materiali;
 - Abbiamo implementato la luce all'interno della scena attraverso dei controlli per il suo movimento e accensione/spegnimento;  
 ![pulsantiera](screenshot/pulsantieraLuci.png)
@@ -41,6 +41,7 @@ Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'o
 - Abbiamo inserito altri tipi di materiali implementando le texture del legno;
 - Abbiamo testato il configuratore su dispositivi mobili e abbiamo visto che i FPS rimangono stabili tra i 45 e 60 FPS;  
 ![testMobile](screenshot/screen_test_mobile.jpg)
+- Abbiamo implementato il nuovo materiale provvisorio per simulare un reale caso di "presto disponibile sul sito" 
 - Sistemazione codice finale e dettagli implementativi per la pulizia e l'efficienza dell'intera scena.
 
 ## Scelte di implementazione

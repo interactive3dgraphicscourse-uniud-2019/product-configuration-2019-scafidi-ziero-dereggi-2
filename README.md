@@ -13,9 +13,9 @@ Team:
 Il progetto consiste in una applicazione web caratterizzata da un sito di e-commerce che permette l'acquisto di un'ascia da battaglia mongola (L'ascia di gengis khan). In particolare abbiamo sviluppato la possibilità di visualizzare il prodotto anche dopo aver modificato i suoi materiali, cosi da consentire al cliente una maggiore personalizzazione. Sarà quindi possibile variare il materiale dell'ascia, del manico e si potrà visualizzare l'oggetto nella sua interezza in vari ambienti, cosi da mostrare più precisamente possibile, come varia l'oggetto in situazioni differenti.
 
 ### Descrizione degli elementi
-- **Scelta del materiale lama:** E' costituita dalla possibilità di scegliere tra argento, oro e ??;
-- **Scelta del materiale del'asta:** E' costituita dalla possibilità di scegliere tra argento, oro e legno e ??
-- **Scelta della cubemap:** E' costituit dalla possibilità di scegliere tra 5 ambienti diversi e una versione priva di background;
+- **Scelta del materiale lama:** E' costituita dalla possibilità di scegliere tra argento, oro, smeraldo e materiale presto disponibile;
+- **Scelta del materiale del'asta:** E' costituita dalla possibilità di scegliere tra titanio, rame, legno e carbonio
+- **Scelta della cubemap:** E' costituita dalla possibilità di scegliere tra 5 ambienti diversi e una versione priva di background;
 - **Comandi della luce:** Mini pannello per la gestione della luce nell'ambiente senza background che permette di visualizzare la fonte di luce e manovrarla;
 - **Area di visualizzazione del modello:** Costituita da una scena attraverso il quale si può azionare la camera e visualizzare il modello con tutte le caratteristiche scelte.
 - **Descrizione generica:** Parte sottostante alla pagina che descrive l'oggetto e simula più relisticamente possibile, un sito di e-commerce
@@ -40,6 +40,8 @@ Esempio di cambio dei materiali in una diversa ambientazione:
 Esempio di movimento della luce 
 ![luce](screenshot/screen2.png)
 ![no luce](screenshot/screen3.png)
+Esempio di materiale presto disponibile:
+![materiale](screenshot/materialePrestoDis.png)
 
 ## Controllo Luci
 Nella visualizzazione senza l'ambiente circostante, quindi senza cubemap, abbiamo implementato la possibilità di vedere come si comportano i materiali degli oggetti in presenza di una luce puntiforme, al netto di tutte le luci ambientali.  
