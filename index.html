@@ -643,6 +643,7 @@
 
 
             var uniformscomingSoon = {
+                
                     cspec:  { type: "v3", value: new THREE.Vector3(0.8,0.8,0.8) },
                     normalMap:  { type: "t", value: normalMapL},
                     normalScale: {type: "v2", value: new THREE.Vector2(1,1)},
@@ -889,6 +890,7 @@
             			caricaModello();
             			break;
                     case 'comingSoon':
+                    alert("Questo materiale segreto ancora non è in vendita :( \nResta sintonizzato e presto lo potrai vedere in anteprima sul nostro sito!");
                         uniformscomingSoon.envMap.value = environment;
                         uniformsL = uniformscomingSoon;
                         lamaMaterial = new THREE.ShaderMaterial({ uniforms: uniformsL, vertexShader: vs, fragmentShader: fs_comingSoon });
