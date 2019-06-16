@@ -29,7 +29,15 @@ La geometria del modello è caratterizzata da:
 - converted to Triangles 11.3k
 - Vertices: 6k
 - Uploaded size: 23MB
+
 ### Shaders
+In questo progetto sono state utilizzate principalmente cinque tipi di BRDF/luci:
+- **Pre-filtered EM with diffuse BRDF (IEM):** E' stata utilizzata per il rendering degli elementi isolanti, come legno e carbonio (coi valori ricavati dalla texture) quando l'ambiente è rappresentato tramite l'environment map. 
+- **Combined Shader:** Per i materiali isolanti di cui sopra, nel caso che il materiale sia illuminato solo dalla clight e da una luce di posizione, la BRDF utilizzata è formata dalla combinazione dello shader lambertiano e dallo shader a microfaccette speculare. Anche per questo shader i valori vengono ricavati dalla texture
+- **BRDF a microfaccette speculare:** E' stato utilizzato per i metalli, dove l'ambiente è rappresentato dalla cligth e da una luce di posizione
+- **Glossy reflection Mapping:** Per i materiali metallici con ambiente rappresentato dall'environment map si è usata una BRDF speculare che utilizza la mappa di riflessione e permette di riprodurre un effetto lucido sul materiale utilizzato
+- **Refraction mapping:** Per la visualizzazione della lama trasparente è stato usata una BRDF a microfaccette speculare dove l'ambiente è rappresentato dall'environment map, e dove è stata utilizzata una mappa di rifrazione per poter simulare i materiali trasparenti tramite la seguente formula: refract(-worldV,worldN,(1.0/1.52)) dove worldV è il vettore incidente, worldN è la normale alla superficie e i due valori sono rispettivamente gli indici di rifrazione dell'aria e del vetro
+
 
 ## Screenshots del progetto
 Intero sito web:
