@@ -10,7 +10,7 @@ Team:
 - De Reggi Paolo - 123783.
 
 ## Descrizione generale del progetto
-Il progetto consiste in una applicazione web caratterizzata da un sito di e-commerce che permette l'acquisto di un'ascia da battaglia mongola (L'ascia di gengis khan). In particolare abbiamo sviluppato la possibilità di visualizzare il prodotto anche dopo aver modificato i suoi materiali, cosi da consentire al cliente una maggiore personalizzazione. Sarà quindi possibile variare il materiale dell'ascia, del manico e si potrà visualizzare l'oggetto nella sua interezza in vari ambienti, cosi da mostrare più precisamente possibile, come varia l'oggetto in situazioni differenti.
+Il progetto consiste in una applicazione web caratterizzata da un sito di e-commerce che permette l'acquisto di un'ascia da battaglia mongola (l'ascia di Gengis Khan). In particolare abbiamo sviluppato la possibilità di visualizzare il prodotto anche dopo aver modificato i suoi materiali, cosi da consentire al cliente una maggiore personalizzazione. Sarà quindi possibile variare il materiale dell'ascia, del manico e si potrà visualizzare l'oggetto nella sua interezza in vari ambienti, cosi da mostrare più precisamente possibile come varia l'oggetto in situazioni differenti.
 
 ### Descrizione degli elementi
 - **Scelta del materiale lama:** E' costituita dalla possibilità di scegliere tra argento, oro, smeraldo e materiale presto disponibile;
@@ -21,7 +21,7 @@ Il progetto consiste in una applicazione web caratterizzata da un sito di e-comm
 - **Descrizione generica:** Parte sottostante alla pagina che descrive l'oggetto e simula più relisticamente possibile, un sito di e-commerce
 
 ### Modello e Texture
-Per il modello abbiamo utilizzato una struttura già costruita (https://sketchfab.com/3d-models/decorative-battle-axe-71c096cafedd4aecb52f1f8eaccd5146), caratterizzata da un asta e la testa dell'ascia. L'ascia ha la forma di una mezzaluna. L'asta è semi rotonda, tappata con una piastra che usa canali longitudinali. Il lato smussato è decorato con la figura di un uccello. Entrambi i lati della testa dell'ascia sono decorati con ornamenti floreali con due figure stilizzate di animali.
+Per il modello abbiamo utilizzato una struttura già costruita (https://sketchfab.com/3d-models/decorative-battle-axe-71c096cafedd4aecb52f1f8eaccd5146), caratterizzata da un asta e dalla testa dell'ascia. L'ascia ha la forma di una mezzaluna. L'asta è semi rotonda, tappata con una piastra che usa canali longitudinali. Il lato smussato è decorato con la figura di un uccello. Entrambi i lati della testa dell'ascia sono decorati con ornamenti floreali con due figure stilizzate di animali.
 La geometria del modello è caratterizzata da: 
 - Quads: 5.7k
 - Triangles: 20
@@ -36,7 +36,7 @@ In questo progetto sono state utilizzate principalmente cinque tipi di BRDF/luci
 - **Combined Shader:** Per i materiali isolanti di cui sopra, nel caso che il materiale sia illuminato solo dalla clight e da una luce di posizione, la BRDF utilizzata è formata dalla combinazione dello shader lambertiano e dallo shader a microfaccette speculare. Anche per questo shader i valori vengono ricavati dalla texture
 - **BRDF a microfaccette speculare:** E' stato utilizzato per i metalli, dove l'ambiente è rappresentato dalla cligth e da una luce di posizione
 - **Glossy reflection Mapping:** Per i materiali metallici con ambiente rappresentato dall'environment map si è usata una BRDF speculare che utilizza la mappa di riflessione e permette di riprodurre un effetto lucido sul materiale utilizzato
-- **Refraction mapping:** Per la visualizzazione della lama trasparente è stato usata una BRDF a microfaccette speculare dove l'ambiente è rappresentato dall'environment map, e dove è stata utilizzata una mappa di rifrazione per poter simulare i materiali trasparenti tramite la seguente formula: refract(-worldV,worldN,(1.0/1.52)) dove worldV è il vettore incidente, worldN è la normale alla superficie e i due valori sono rispettivamente gli indici di rifrazione dell'aria e del vetro
+- **Refraction mapping:** Per la visualizzazione della lama trasparente è stato usata una BRDF a microfaccette speculare dove l'ambiente è rappresentato dall'environment map, e dove è stata utilizzata una mappa di rifrazione per poter simulare i materiali trasparenti tramite la seguente formula: refract(-worldV,worldN,(1.0/1.52)) dove worldV è il vettore incidente, worldN è la normale alla superficie e i due valori restanti sono rispettivamente gli indici di rifrazione dell'aria e del vetro
 
 
 ## Screenshots del progetto
@@ -59,7 +59,7 @@ Per attivare questo tipo di visualizzazione sono stati predisposti alcuni pulsan
 - attivazione/disattivazione del movimento di rotazione della luce  
 
 La luce, per semplicità, è stata simulata in maniera visuale da un oggetto di tipo Sphere, da cui si presuppone escano i raggi luminosi. Nella foto, infatti, è possibile visualizzare la sfera che irraggia la nostra ascia e il comportamento del materiale. La luce "accesa" è contraddistinta dal colore giallo della sfera.  
-Ovviamente se "spegniamo la luce", azzerando la sua intensità, l'oggetto risulterà completamente al buio e la sfera sarà colorata di grigio.  
+Ovviamente se "spegniamo la luce", azzerando la sua intensità, l'oggetto risulterà completamente al buio e la sfera sarà colorata di nero.  
 
 
 ## Processo produttivo e planning steps

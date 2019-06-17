@@ -15,7 +15,7 @@ Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'o
 
 ## Progressi del progetto
 
-**PARTENZA:** Siamo partiti pensando a come potessimo strutturare questo progetto: abbiamo pensato subito all'oggetto da rappresentare e dopo un brain storming abbiamo pensato di rappresentare un coltello: questo pechè un oggetto come un coltello è in generale costituito principalmente da 2 materiali: uno per la lama e uno per il manico, con proprietà diverse tra loro.
+**PARTENZA:** Siamo partiti pensando a come potessimo strutturare questo progetto: abbiamo pensato subito all'oggetto da rappresentare e dopo un brain storming abbiamo scelto di rappresentare un coltello: questo perchè un oggetto come un coltello è in generale costituito principalmente da 2 materiali: uno per la lama e uno per il manico, con proprietà diverse tra loro.
 
 **PASSI DI SVILUPPO**
 - Abbiamo scelto il modello a cui fare riferimento per il resto del progetto;
@@ -37,7 +37,7 @@ Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'o
 ![luceOn](screenshot/lucePalla_on.png)
 ![luceOFF](screenshot/lucePalla_off.png)
 - Abbiamo aggiunto delle label che permettessero all'utente di visualizzare le scelte effettuate sui materiali;
-- Abbiamo aggiunto una navigation bar per simulare più relaisticamente possibile, un sito di e-commerce;
+- Abbiamo aggiunto una navigation bar per simulare più realisticamente possibile, un sito di e-commerce;
 - Abbiamo inserito altri tipi di materiali implementando le texture del legno;
 - Abbiamo testato il configuratore su dispositivi mobili e abbiamo visto che i FPS rimangono stabili tra i 45 e 60 FPS;  
 ![testMobile](screenshot/screen_test_mobile.jpg)
@@ -51,4 +51,4 @@ Infine nella parte sottostante abbiamo deciso di inserire una descrizione dell'o
 
 ## Problemi riscontrati e soluzioni
 - Abbiamo riscontrato inizialmente un problema di caricamento dell'oggetto 3D nella pagina in quanto il formato era sbagliato per threejs, risolvendo attraverso la scelta di un modello più appropriata;
-- Abbiamo riscontrato un problema nel modello in quanto secondo le nostre scelte implementative, avevamo pensato di elaborare la scena attraverso la definizione diversa dei materiali all'interno del modello; questo ci ha portati al notare che il modello che avevamo scelto inizialmente (un coltello), era costituito da un solo materiale; Abbiamo dunque provato a suddividerlo in più mesh ma la soluzione ottenuta non soddisfava le nostre aspettative. Abbiamo deciso dunque di cambiare modello e utilizzarne uno strutturato in modo più complesso ma che ci permettesse di avere più libertà nella modifica della parti dell'oggetto in esame.
+- Abbiamo riscontrato un problema nel modello in quanto secondo le nostre scelte implementative avevamo pensato di elaborare la scena attraverso la definizione diversa dei materiali all'interno del modello; questo ci ha portati a notare che il modello che avevamo scelto inizialmente (un coltello), era costituito da un solo materiale; Abbiamo dunque provato a suddividerlo in più mesh ma la soluzione ottenuta non soddisfava le nostre aspettative. Abbiamo quindi deciso di cambiare modello e utilizzarne uno strutturato in modo più complesso ma che ci permettesse di avere più libertà nella modifica della parti dell'oggetto in esame.
